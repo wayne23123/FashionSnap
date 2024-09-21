@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 60" width="300" height="60">
   <defs>
     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#daa520" />
@@ -9,5 +9,5 @@
       <feDropShadow dx="2" dy="2" stdDeviation="2" />
     </filter>
   </defs>
-  <text x="10" y="45" fill="url(#gradient)" font-size="50" filter="url(#shadow)">FSnap</text>
+  <text x="10" y="45" fill="url(#gradient)" font-size="50" filter="url(#shadow)">FashionSnap</text>
 </svg>
