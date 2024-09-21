@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'; // 引入 ref 和 onMounted
+import { ref, onMounted, onUnmounted } from 'vue';
 
 // 控制小螢幕上的菜單開關
 const isMenuOpen = ref(false);
@@ -67,7 +67,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* 將 Navbar 背景設置為透明，並在滾動時應用模糊效果 */
+/* Navbar 核心樣式 */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -79,22 +79,26 @@ onMounted(() => {
   top: 0;
   width: 100vw;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid #00000060;
   z-index: 200;
-  transition: background-color 0.3s ease, backdrop-filter 0.3s ease; /* 添加過渡效果 */
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-/* 在滾動時改變透明度 */
+/* 寬螢幕優化 */
+@media (min-width: 1200px) {
+  .navbar {
+    padding: 10px 50px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}
+
+/* 滾動時改變背景色 */
 .navbar.scrolled {
   background-color: rgba(255, 255, 255, 0.9); /* 滾動時增加不透明度 */
   backdrop-filter: blur(15px); /* 增加模糊程度 */
 }
 
-.navbar:hover {
-  background-color: #dddddd;
-}
-
-/* LOGO 樣式 */
+/* 大螢幕的 LOGO 樣式 */
 .logo img {
   height: 50px;
 }
@@ -150,7 +154,7 @@ onMounted(() => {
   background-color: #f0f0f0;
 }
 
-/* 響應式設計 - 小於 768px 時啟用 */
+/* 小螢幕漢堡菜單啟用 */
 @media (max-width: 768px) {
   .nav-links {
     display: none; /* 隱藏大螢幕的導航連結 */

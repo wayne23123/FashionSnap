@@ -17,10 +17,19 @@
 </template>
 
 <script setup>
+// 使用 import 導入圖片
+import w001 from '../assets/imgs/w001.jpg';
+import w002 from '../assets/imgs/w002.jpg';
+import w003 from '../assets/imgs/w003.jpg';
+
 const products = [
-  { name: 'Stylish T-shirt', price: '$20', image: '../assets/product1.jpg' },
-  { name: 'Cool Jacket', price: '$50', image: '../assets/product2.jpg' },
-  { name: 'Comfy Shoes', price: '$80', image: '../assets/product3.jpg' },
+  {
+    name: 'Stylish T-shirt',
+    price: '$20',
+    image: w001,
+  },
+  { name: 'Cool Jacket', price: '$50', image: w002 },
+  { name: 'Comfy Shoes', price: '$80', image: w003 },
 ];
 </script>
 
