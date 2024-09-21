@@ -118,4 +118,24 @@ function toTopFunction() {
 .item:nth-child(4) .txt {
   background-color: rgba(149, 219, 214, 0.8);
 }
+
+/* 媒體查詢：針對手機或小於 768px 的螢幕 */
+@media (max-width: 1250px) {
+  .wrap {
+    width: 100%;
+    margin: auto;
+  }
+  .item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .item .txt {
+    padding: 30px 20px;
+  }
+
+  .item > :first-child {
+    margin-right: 0;
+  }
+}
 </style>

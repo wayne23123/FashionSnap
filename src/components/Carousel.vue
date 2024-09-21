@@ -5,7 +5,6 @@ const items = ref([
   { image: './src/assets/pictures/shop02.webp' },
   { image: './src/assets/pictures/carl-r.jpg' },
   { image: './src/assets/pictures/hannah-m.jpg' },
-  { image: './src/assets/pictures/prudence.jpg' },
 ]);
 
 const currentIndex = ref(0);
