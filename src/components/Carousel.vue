@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const items = ref([
-  { image: './src/assets/pictures/mike.jpg' },
+  { image: './src/assets/pictures/shop02.webp' },
   { image: './src/assets/pictures/carl-r.jpg' },
   { image: './src/assets/pictures/hannah-m.jpg' },
   { image: './src/assets/pictures/prudence.jpg' },
@@ -68,7 +68,7 @@ onUnmounted(() => {
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 800px;
   overflow: hidden;
   perspective: 1000px; /* 3D 透視效果 */
 }
@@ -85,7 +85,7 @@ onUnmounted(() => {
 
 .carousel-item img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   transform: scale(1);
   transition: transform 0.5s ease-in-out;
@@ -123,9 +123,37 @@ button:hover {
 }
 
 /* 響應式設計 */
+@media (max-width: 1200px) {
+  .carousel-container {
+    height: 700px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .carousel-container {
+    height: 550px;
+  }
+}
+
+@media (max-width: 850px) {
+  .carousel-container {
+    height: 450px;
+  }
+}
+
 @media (max-width: 768px) {
   .carousel-container {
-    height: 300px;
+    height: 350px;
+  }
+
+  button {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .carousel-container {
+    height: 250px;
   }
 
   button {
