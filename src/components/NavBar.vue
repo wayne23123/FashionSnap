@@ -42,6 +42,7 @@ onMounted(() => {
       <router-link to="/" class="nav-item">首頁</router-link>
       <router-link to="/shop" class="nav-item">商品</router-link>
       <router-link to="/about" class="nav-item">關於我</router-link>
+      <router-link to="/cart" class="nav-item">購物車</router-link>
     </nav>
 
     <!-- 小螢幕的漢堡菜單按鈕 -->
@@ -57,6 +58,9 @@ onMounted(() => {
       >
       <router-link to="/about" class="mobile-nav-item" @click="toggleMenu"
         >關於我</router-link
+      >
+      <router-link to="/cart" class="mobile-nav-item" @click="toggleMenu"
+        >購物車</router-link
       >
     </nav>
   </header>

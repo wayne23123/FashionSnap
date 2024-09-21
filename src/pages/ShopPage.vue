@@ -1,507 +1,291 @@
+<template>
+  <div class="shop-page">
+    <!-- 搜尋與篩選區 -->
+    <div class="filter-bar">
+      <input
+        type="text"
+        v-model="searchTerm"
+        placeholder="Search products..."
+        class="search-input"
+        @input="filterProducts"
+      />
+
+      <label>
+        Category:
+        <select
+          v-model="selectedCategory"
+          @change="filterProducts"
+          class="category-select"
+        >
+          <option value="All">All</option>
+          <option value="T-shirt">T-shirt</option>
+          <option value="Jacket">Jacket</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Hat">Hat</option>
+        </select>
+      </label>
+
+      <!-- 標籤篩選 -->
+      <div class="tag-filters">
+        <button
+          @click="toggleTag('New Arrival')"
+          :class="{ active: selectedTags.includes('New Arrival') }"
+        >
+          New Arrival
+        </button>
+        <button
+          @click="toggleTag('On Sale')"
+          :class="{ active: selectedTags.includes('On Sale') }"
+        >
+          On Sale
+        </button>
+        <button
+          @click="toggleTag('Popular')"
+          :class="{ active: selectedTags.includes('Popular') }"
+        >
+          Popular
+        </button>
+      </div>
+    </div>
+
+    <!-- 商品展示區 -->
+    <div class="products-grid">
+      <div
+        class="product-card"
+        v-for="(product, index) in filteredProducts"
+        :key="index"
+      >
+        <div class="product-image-wrapper">
+          <img :src="product.image" alt="product image" class="product-image" />
+        </div>
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price }}</p>
+        <div class="tags">
+          <span v-for="tag in product.tags" :key="tag" class="tag">{{
+            tag
+          }}</span>
+        </div>
+        <router-link :to="`/product/${product.id}`" class="view-details"
+          >View Details</router-link
+        >
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
-import { ref, reactive } from "vue";
-import Marquee from "../components/Marquee.vue";
-import { useProductionStore } from "../stores/production";
-import Footer from "../components/Footer.vue";
-import { useDemoStore } from "../stores/demo";
-import { useCartStore } from "../stores/cart";
-import CarouselShop from "../components/CarouselShop.vue";
+import { ref, computed } from 'vue';
 
-const sectionDebugRef = ref(false);
+const products = ref([
+  {
+    id: 1,
+    name: 'Stylish T-shirt',
+    category: 'T-shirt',
+    price: '$20',
+    image: '../assets/product1.jpg',
+    tags: ['New Arrival'],
+  },
+  {
+    id: 2,
+    name: 'Cool Jacket',
+    category: 'Jacket',
+    price: '$50',
+    image: '../assets/product2.jpg',
+    tags: ['On Sale'],
+  },
+  {
+    id: 3,
+    name: 'Comfy Shoes',
+    category: 'Shoes',
+    price: '$80',
+    image: '../assets/product3.jpg',
+    tags: ['Popular'],
+  },
+  {
+    id: 4,
+    name: 'Fashion Hat',
+    category: 'Hat',
+    price: '$30',
+    image: '../assets/product4.jpg',
+    tags: ['New Arrival', 'Popular'],
+  },
+  {
+    id: 5,
+    name: 'Summer T-shirt',
+    category: 'T-shirt',
+    price: '$22',
+    image: '../assets/product5.jpg',
+    tags: ['On Sale'],
+  },
+  {
+    id: 6,
+    name: 'Winter Jacket',
+    category: 'Jacket',
+    price: '$70',
+    image: '../assets/product6.jpg',
+    tags: ['Popular'],
+  },
+]);
 
-const productionStore = useProductionStore();
-const demoStore = useDemoStore();
-const cartStore = useCartStore();
+const selectedCategory = ref('All');
+const searchTerm = ref('');
+const selectedTags = ref([]);
 
-const carouselShopShowRef = ref(false);
-window.addEventListener("scroll", function () {
-  // 當 scrollY大於290 則 carouselShopShowRef 為 true
-  carouselShopShowRef.value = window.scrollY > 290;
+const filteredProducts = computed(() => {
+  return products.value.filter((product) => {
+    const matchesCategory =
+      selectedCategory.value === 'All' ||
+      product.category === selectedCategory.value;
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchTerm.value.toLowerCase());
+    const matchesTags =
+      selectedTags.value.length === 0 ||
+      selectedTags.value.every((tag) => product.tags.includes(tag));
+
+    return matchesCategory && matchesSearch && matchesTags;
+  });
 });
 
-// 當點擊返回頂部時，滾動到頁面頂部
-function toTopFunction() {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "smooth",
-  });
-}
-
-// 這個空的ref用來複製當滑鼠移入商品卡片的時候,將此商品資訊複製到copyRef
-const copyRef = ref({});
-
-// 當滑鼠移入商品卡片的時候,將此商品資訊複製到copyRef,同時推進demoStore裡面的semos;
-function copyCard(event, production) {
-  copyRef.value = Object.assign({}, production);
-  addDemosFunction();
-}
-
-// 使用 push 將複製的 copyRef 推進 demoStore 裡面的 demos;
-function addDemosFunction() {
-  demoStore.demos.push({
-    id: copyRef.value.id,
-    order: copyRef.value.order,
-    img: copyRef.value.img,
-    title: copyRef.value.title,
-    category: copyRef.value.category,
-    star: copyRef.value.star,
-    stars: copyRef.value.stars,
-    price: copyRef.value.price,
-    description: copyRef.value.description,
-    color: copyRef.value.color,
-    label: copyRef.value.label,
-    counter: copyRef.value.counter,
-    size: copyRef.value.size,
-    kupeng: copyRef.value.kupeng,
-    email: copyRef.value.email,
-    name: copyRef.value.name,
-    telphone: copyRef.value.telphone,
-    adress: copyRef.value.adress,
-    message: copyRef.value.message,
-    d: copyRef.value.d,
-    year: copyRef.value.year,
-    month: copyRef.value.month,
-    date: copyRef.value.date,
-    hours: copyRef.value.hours,
-    minutes: copyRef.value.minutes,
-    seconds: copyRef.value.seconds,
-    pay: copyRef.value.pay,
-    complete: copyRef.value.complete,
-  });
-}
-
-// 這個 amountRef 用 v-model 綁定卡片下的選單
-const amountRef = ref(1);
-
-// 這個sizeRef用v-model綁定卡片下的選單
-const sizeRef = ref("M");
-
-// 使用 push 將複製的 copyRef 推進 cartStore 裡面的 emptyRefs 再用 comparisonByIdFuntion來比較後加入購物車;
-function addCartsFunction() {
-  cartStore.emptyRefs.push({
-    id: copyRef.value.id,
-    order: copyRef.value.order,
-    img: copyRef.value.img,
-    title: copyRef.value.title,
-    category: copyRef.value.category,
-    star: copyRef.value.star,
-    stars: copyRef.value.stars,
-    price: copyRef.value.price,
-    description: copyRef.value.description,
-    color: copyRef.value.color,
-    label: copyRef.value.label,
-    counter: amountRef.value * 1,
-    size: sizeRef.value,
-    kupeng: copyRef.value.kupeng,
-    email: copyRef.value.email,
-    name: copyRef.value.name,
-    telphone: copyRef.value.telphone,
-    adress: copyRef.value.adress,
-    message: copyRef.value.message,
-    d: copyRef.value.d,
-    year: copyRef.value.year,
-    month: copyRef.value.month,
-    date: copyRef.value.date,
-    hours: copyRef.value.hours,
-    minutes: copyRef.value.minutes,
-    seconds: copyRef.value.seconds,
-    pay: copyRef.value.pay,
-    complete: copyRef.value.complete,
-  });
-  cartStore.comparisonByIdFunction();
+function toggleTag(tag) {
+  if (selectedTags.value.includes(tag)) {
+    selectedTags.value = selectedTags.value.filter((t) => t !== tag);
+  } else {
+    selectedTags.value.push(tag);
+  }
 }
 </script>
 
-<template>
-  <section>
-    <div class="leftNavBar">
-      <div class="leftNavBarLayout">
-        <div class="leftNavBarCenter">
-          <label for="input-field">輸入商品名稱來搜尋商品</label>
-        </div>
-        <div class="leftNavBarCenter">
-          <input
-            @mouseenter="productionStore.searchTerm = []"
-            id="input-field"
-            v-model="productionStore.searchTerm"
-            class="searchInput"
-            type="text"
-            placeholder="搜尋商品..."
-          />
-        </div>
-
-        <br />
-        <div class="leftNavBarCenter">
-          <label for="showAll"> 全部商品 </label>
-          <input
-            id="showAll"
-            type="radio"
-            name="category"
-            value=""
-            v-model="productionStore.searchTerm"
-            class="inputRadio"
-          />
-        </div>
-        <br />
-        <div class="leftNavBarCenter">
-          <label for="showHat"> 帽子分類</label>
-          <input
-            id="showHat"
-            type="radio"
-            name="category"
-            value="hat"
-            v-model="productionStore.searchTerm"
-            class="inputRadio"
-          />
-        </div>
-        <br />
-        <div class="leftNavBarCenter">
-          <label for="showShoes"> 鞋子分類</label>
-          <input
-            id="showShoes"
-            type="radio"
-            name="category"
-            value="shoes"
-            v-model="productionStore.searchTerm"
-            class="inputRadio"
-          />
-        </div>
-        <br />
-        <div class="leftNavBarCenter">
-          <label for="showClothes"> 衣服分類</label>
-          <input
-            id="showClothes"
-            type="radio"
-            name="category"
-            value="clothes"
-            v-model="productionStore.searchTerm"
-            class="inputRadio"
-          />
-        </div>
-        <br />
-        <div class="leftNavBarCenter">
-          <label for="showPants"> 褲子分類</label>
-          <input
-            id="showPants"
-            type="radio"
-            name="category"
-            value="pants"
-            v-model="productionStore.searchTerm"
-            class="inputRadio"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="main">
-      <section class="sectionHolder"></section>
-      <CarouselShop />
-      <section v-show="sectionDebugRef" class="sectionDebug">
-        <div v-for="cart in cartStore.carts" :key="cart.id">
-          carts的狀況{{ cart }}
-        </div>
-        <div class="shopCard">
-          <div>
-            <div class="cardImg">
-              <router-link to="/demo">
-                <img class="imgSize" :src="copyRef.img" />
-              </router-link>
-            </div>
-            <div class="cardCart">
-              <select name="sizeRef" v-model="sizeRef">
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="S">S</option>
-              </select>
-              <select name="amount" v-model="amount">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>
-              <button @mouseenter="addCartTest" class="cardCartButton">
-                <div class="buttonText">🛒</div>
-              </button>
-            </div>
-            <div class="cardLeft">
-              <div class="cardTitle">{{ copyRef.title }}</div>
-              <div class="cardCategory">
-                種類: {{ copyRef.category }} copyRef的狀況
-              </div>
-              <div class="cardStar">{{ copyRef.star }}</div>
-              <div class="cardPrice">NT{{ copyRef.price }}</div>
-            </div>
-          </div>
-        </div>
-        <div
-          v-for="(demo, index) in demoStore.sliceLastDemoFunction"
-          :key="index"
-        >
-          sliceLastDemoFunction只顯示demos最後一筆資料{{ demo }}
-        </div>
-
-        <div v-for="demo in demoStore.demos">demos狀況{{ demo }}</div>
-      </section>
-
-      <Marquee />
-      <div class="shopContainer">
-        <div
-          @mouseenter="copyCard($event, production)"
-          class="shopCard"
-          v-for="production in productionStore.searchedProductionTitle"
-          :id="production.id"
-        >
-          <div class="cardImg">
-            <router-link to="/demo">
-              <img class="imgSize" :src="production.img" />
-              <img class="imgPOR" :src="production.img" />
-            </router-link>
-          </div>
-          <div class="cardCart">
-            <select name="sizeRef" v-model="sizeRef">
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-              <option value="S">S</option>
-            </select>
-            <select name="amount" v-model="amountRef">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-            <button @click="addCartsFunction" class="cardCartButton">
-              <div class="buttonText">🛒</div>
-            </button>
-          </div>
-          <div class="cardLeft">
-            <div class="cardTitle">{{ production.title }}</div>
-            <div class="cardCategory">種類: {{ production.category }}</div>
-            <div class="cardStar">{{ production.star }}</div>
-            <div class="cardPrice">NT {{ production.price }}</div>
-          </div>
-        </div>
-      </div>
-
-      <transition name="fade" tag="div" v-show="carouselShopShowRef">
-        <button @mouseenter="toTopFunction" class="toTop">
-          <div class="toTopButton">▲ TOP</div>
-        </button>
-      </transition>
-
-      <Footer class="Footer" />
-    </div>
-  </section>
-</template>
-
 <style scoped>
-section {
-  width: 100vw;
-  max-width: 100%;
+.shop-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.sectionHolder {
-  height: 75px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
-}
-.sectionDebug {
-  display: flex;
-  background-color: black;
-  color: green;
-  width: 100%;
-  height: 60vh;
-}
-
-.sectionDebug button {
-  background-color: green;
-}
-.main {
-  position: absolute;
-  right: 0;
-  width: 80vw;
-  background-color: #c4c4c4;
-  max-width: 80%;
-}
-
-.toTop {
-  top: 550px;
-  right: 22px;
-  position: fixed;
-  z-index: 200;
-  background-color: #6f0202;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-}
-
-.toTopButton {
-  color: white;
-  pointer-events: none;
-}
-
-/* V left--------------------------------------------------------------------------------- */
-.leftNavBar {
-  position: fixed;
-  height: 100vh;
-  width: 20vw;
-  background-color: rgb(70, 0, 0);
-  max-width: 20%;
-}
-
-.leftNavBarLayout {
-  top: 100px;
-  width: 100%;
-  color: #daa520;
-}
-.leftNavBarCenter {
-  display: flex;
-  justify-content: center;
-}
-
-.searchInput {
-  width: 19vw;
-}
-
-label {
-  cursor: pointer;
-}
-
-input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none; /* WebKit 前缀 */
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  cursor: pointer;
-}
-
-input[type="radio"]:checked {
-  background-color: #da2020a5;
-  border-color: #da2020;
-}
-/* A left--------------------------------------------------------------------------------- */
-
-.shopContainer {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  justify-content: flex-start;
-  background-color: goldenrod;
-  width: 80vw;
-  max-width: 100%;
-}
-
-.shopCard {
+.filter-bar {
   display: flex;
   flex-direction: column;
-  margin: 12px;
-  padding: 0 10px;
+  gap: 20px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  padding: 20px;
   border-radius: 15px;
-  background-color: gray;
-  height: 350px;
-  width: 15vw;
-  min-width: 250px;
-  overflow: hidden;
-  left: 60px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.cardImg {
-  position: relative;
-  width: 230px;
-  height: 230px;
-  top: 15px;
-  background-color: black;
-  overflow: hidden;
-}
-
-.imgSize {
+.search-input {
+  padding: 10px;
+  font-size: 1.2rem;
   width: 100%;
-  height: auto;
-  z-index: 12;
+  max-width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.imgSize:hover {
-  transform: scale(1.2);
-  transition: all 0.5s ease;
+.category-select {
+  padding: 10px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
-.imgPOR {
-  position: relative;
+.tag-filters {
+  display: flex;
+  gap: 10px;
+}
+
+.tag-filters button {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tag-filters button.active {
+  background-color: #ff6347;
+  color: white;
+  border-color: #ff6347;
+}
+
+.tag-filters button:hover {
+  background-color: #ff4500;
+  color: white;
+}
+
+/* 商品展示區設計 */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.product-card {
   width: 100%;
-  height: 100%;
-  z-index: 10;
-  filter: blur(5px);
-  transform: translate(0, -50%);
+  max-width: 280px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.cardCart {
-  position: relative;
-  bottom: -95px;
-  left: 115px;
-  z-index: 50;
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.cardCartButton {
-  position: relative;
-  bottom: 10px;
-  background-color: rgba(255, 0, 0, 0.772);
-  padding: 18px;
-  border-radius: 50%;
+.product-image-wrapper {
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
 
-.cardCartButton:hover {
-  background-color: rgba(255, 0, 0, 1);
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-.buttonText {
-  position: absolute;
-  right: 9px;
-  bottom: 9px;
-  pointer-events: none;
+.product-card:hover .product-image {
+  transform: scale(1.1);
 }
 
-.cardTitle {
-  color: black;
-}
-.cardLeft {
-  position: relative;
-  bottom: 15px;
+.tags {
+  margin-top: 10px;
 }
 
-.cardCategory {
-  color: rgba(30, 30, 30, 0.7);
-}
-.cardStar {
-  color: yellow;
-}
-
-.cardPrice {
-  color: black;
-}
-
-.Footer {
-  max-width: none;
-  position: relative;
-  width: 97.39vw;
-  left: -20vw;
+.tag {
+  display: inline-block;
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin: 5px;
+  font-size: 0.9rem;
 }
 
-/* 控制TransitionGroup------------------------------------------------------------------------------------------------------- */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1.5s;
+.view-details {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
+.view-details:hover {
+  background-color: #0056b3;
 }
 </style>

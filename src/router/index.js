@@ -6,6 +6,7 @@ import AboutPage from '../pages/AboutPage.vue';
 import CartPage from '../pages/CartPage.vue';
 import PayPage from '../pages/PayPage.vue';
 import FormPage from '../pages/FormPage.vue';
+import ProductDetailPage from '../pages/ProductDetailPage.vue'; // 新增商品詳情頁面
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,12 @@ const router = createRouter({
       path: '/pay',
       name: 'pay',
       component: PayPage,
+    },
+    {
+      path: '/product/:id',
+      name: 'product-detail',
+      component: ProductDetailPage,
+      props: true,
     },
   ],
 });
