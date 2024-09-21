@@ -1,338 +1,163 @@
 <script setup>
-import { ref, computed } from "vue";
-import { useCartStore } from "../stores/cart";
-import { useProductionStore } from "../stores/production";
+import { ref, onMounted, onUnmounted } from 'vue'; // 引入 ref 和 onMounted
 
-const cartStore = useCartStore();
-const productionStore = useProductionStore();
+// 控制小螢幕上的菜單開關
+const isMenuOpen = ref(false);
 
-// cartShowRef 控制右上角小購物車開關
-const cartShowRef = ref(false);
-
-function mouseEnterShowCart() {
-  if (window.innerWidth > 605) {
-    cartShowRef.value = true;
-  }
-}
-function mouseEnterNoShowCart() {
-  cartShowRef.value = false;
+// 切換小螢幕菜單的開關狀態
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
 }
 
-// 當 carts 陣列中友值時則 cartsHasProduction 為 true
-const cartsHasProduction = computed(() => {
-  return cartStore.carts.length > 0;
-});
+// 監聽滾動事件，當滾動時給 navbar 添加 class
+onMounted(() => {
+  const navbar = document.querySelector('.navbar');
 
-// 使用 computed 計算購物車中的商品數量總和
-const cartsTotalCounter = computed(() => {
-  return cartStore.carts.reduce((acc, cur) => {
-    // reduce 方法中的第一個參數 acc 表示累加器，也就是上一次累加後的结果
-    // reduce 方法中的第二個參數 cur 表示當前正在循環的元素
-    return acc + cur.counter;
-  }, 0);
-});
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  };
 
-// 使用 computed 計算購物車中商品的價格總和
-const cartsTotalPrice = computed(() => {
-  return cartStore.carts.reduce((acc, cur) => {
-    // reduce 方法中的第一個參數 acc 表示累加器，也就是上一次累加後的结果
-    // reduce 方法中的第二個參數 cur 表示當前正在循環的元素
-    // cur.counter * cur.price 表示當前商品的價格
-    return acc + cur.counter * cur.price;
-  }, 0);
+  window.addEventListener('scroll', handleScroll);
+
+  // 卸載事件監聽器
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+  });
 });
 </script>
 
 <template>
-  <section class="header">
-    <router-link to="/" class="none"
-      ><div class="svg"><img src="../assets/svgs/wss.svg" /></div
-    ></router-link>
-    <div class="navbar">
-      <router-link to="/" class="router importSVG"
-        ><div class="svg">
-          <img src="../assets/svgs/home.svg" />Home
-        </div></router-link
-      >
-      <router-link
-        to="/shop"
-        class="router importSVG"
-        @mouseenter="productionStore.searchTerm = ''"
-        ><div class="svg">
-          <img src="../assets/svgs/shop.svg" />Shop
-        </div></router-link
-      >
-      <router-link to="/about" class="router"> ✒About</router-link>
-      <router-link
-        @mouseenter="mouseEnterShowCart"
-        to="/cart"
-        :class="{ 'has-items': cartsHasProduction }"
-        class="router importSVG"
-      >
-        <div class="svg">
-          <img src="../assets/svgs/cart.svg" /> Cart({{ cartsTotalCounter }})
-        </div></router-link
-      >
-      <router-link to="/login" class="router"><div>✎Login</div> </router-link>
-    </div>
-  </section>
-  <transition name="fade">
-    <div v-show="cartsHasProduction" class="redPlus">✚</div>
-  </transition>
+  <header class="navbar">
+    <!-- LOGO -->
+    <router-link to="/" class="logo">
+      <img src="../assets/svgs/wss.svg" alt="Logo" />
+    </router-link>
 
-  <transition name="fade">
-    <div v-show="cartShowRef" class="fakeCart">
-      <div class="cartTop">
-        <div class="cartTriangle"></div>
-      </div>
-      <div class="cartEmpty">
-        <TransitionGroup name="fade" tag="div">
-          <div
-            v-for="cart in cartStore.carts.slice(0, 8)"
-            :key="cart.id"
-            class="cartEmptyTitle"
-          >
-            商品: {{ cart.title }} size: {{ cart.size }} 數量:
-            {{ cart.counter }} 件
-            <button
-              @click="cartStore.removeCartItemById(cart.id)"
-              class="cartEmptyTopButton"
-            >
-              刪除商品
-            </button>
-          </div>
-        </TransitionGroup>
-        <router-link v-if="cartStore.carts.length > 8" to="/cart">
-          到購物車查看更多商品...
-        </router-link>
-        <hr />
-        <div class="cartEmptyTop">
-          <div>
-            目前購物車總共 {{ cartsTotalCounter }} 件商品，總共 NT
-            {{ cartsTotalPrice }} 元
-            <button
-              @click="cartStore.clearCartFunction()"
-              class="cartEmptyTopButton"
-            >
-              刪除全部商品
-            </button>
-          </div>
-        </div>
-        <router-link to="/cart" class="goCart">結帳去</router-link>
-      </div>
-      <div @mouseenter="mouseEnterNoShowCart" class="fakebottom">
-        <div class="fakebottomText">︽</div>
-      </div>
+    <!-- 大螢幕的導航連結 -->
+    <nav class="nav-links">
+      <router-link to="/" class="nav-item">首頁</router-link>
+      <router-link to="/shop" class="nav-item">商品</router-link>
+      <router-link to="/about" class="nav-item">關於我</router-link>
+    </nav>
 
-      <div @mouseenter="mouseEnterNoShowCart" class="fakeright">.</div>
-      <div @mouseenter="mouseEnterNoShowCart" class="fakeleft">.</div>
-    </div>
-  </transition>
+    <!-- 小螢幕的漢堡菜單按鈕 -->
+    <button class="menu-button" @click="toggleMenu">☰</button>
+
+    <!-- 小螢幕的導航菜單 -->
+    <nav v-show="isMenuOpen" class="mobile-nav-links">
+      <router-link to="/" class="mobile-nav-item" @click="toggleMenu"
+        >首頁</router-link
+      >
+      <router-link to="/shop" class="mobile-nav-item" @click="toggleMenu"
+        >商品</router-link
+      >
+      <router-link to="/about" class="mobile-nav-item" @click="toggleMenu"
+        >關於我</router-link
+      >
+    </nav>
+  </header>
 </template>
 
 <style scoped>
-.header {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  max-width: 100%;
-  z-index: 200;
-  font-size: 24px;
-  background-color: #ddd;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 75px;
-}
-.router {
-  padding: 15px;
-}
-
-.importSVG {
-  bottom: 6px;
-}
-
-.has-items {
-  /* 當有商品時的樣式 */
-  color: red;
-  padding: 15px;
-  transition: all 0.75s ease;
-}
-
+/* 將 Navbar 背景設置為透明，並在滾動時應用模糊效果 */
 .navbar {
   display: flex;
-}
-
-a.router-link-exact-active {
-  color: rgb(0, 183, 0);
-}
-
-a:hover {
-  color: rgb(0, 144, 0);
-  transition: all 0.4s ease;
-}
-
-.svg:hover {
-  transition: all 0.4s ease;
-  filter: invert(30%) sepia(100%) saturate(500%) hue-rotate(100deg);
-}
-
-.redPlus {
-  width: 100px;
-  height: 100px;
-  z-index: 300;
-  color: red;
-  position: fixed;
-  right: 40px;
-  font-size: 30px;
-  pointer-events: none;
-}
-
-.fakeCart {
-  position: fixed;
-  z-index: 201;
-  right: 80px;
-  top: 80px;
-  /* background-color: #8a0202; */
-}
-
-.fakebottom {
-  color: red;
-  /* background-color: green */
-}
-
-.fakebottomText {
-  font-size: 26px;
-}
-
-.fakeleft {
-  /* background-color: green; */
-  position: relative;
-  height: 1400px;
-  left: -520px;
-
-  top: -900px;
-}
-
-.fakeright {
-  display: flex;
-  justify-content: flex-end;
-  /* background-color: green; */
-  position: relative;
-  left: 250px;
-}
-
-.cartTop {
-  display: flex;
-  justify-content: flex-end;
-  right: 40px;
-}
-
-.cartTriangle {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  top: 20px;
-  transform: rotate(225deg);
-  background-color: #c4c4c4;
-  z-index: 210;
-  border-right: solid 2px black;
-  border-bottom: solid 2px black;
-}
-
-.cartEmptyTitle {
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #c4c4c4;
-  z-index: 215;
+  background-color: rgba(255, 255, 255, 0.5); /* 透明度50%的白色 */
+  backdrop-filter: blur(10px); /* 背景模糊效果 */
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid #00000060;
+  z-index: 200;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease; /* 添加過渡效果 */
 }
-.cartEmpty {
-  background-color: #c4c4c4;
+
+/* 在滾動時改變透明度 */
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.9); /* 滾動時增加不透明度 */
+  backdrop-filter: blur(15px); /* 增加模糊程度 */
+}
+
+.navbar:hover {
+  background-color: #dddddd;
+}
+
+/* LOGO 樣式 */
+.logo img {
+  height: 50px;
+}
+
+/* 大螢幕的導航連結樣式 */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-item {
   color: black;
-  padding: 20px;
-  border-radius: 15px;
-  border: solid 2px black;
-  z-index: 202;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
 }
 
-.cartEmptyTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.nav-item:hover {
+  color: green;
 }
 
-.cartEmptyTopButton {
-  margin: 10px 15px 0px 10px;
+/* 小螢幕的漢堡菜單按鈕樣式 */
+.menu-button {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* 小螢幕的導航菜單樣式 */
+.mobile-nav-links {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: white;
   padding: 10px;
-
-  background-color: #000000;
-  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.cartEmptyTopButton:hover {
-  background-color: #aa0000;
+.mobile-nav-item {
   color: black;
-  transition: all 0.5s ease;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-.goCart {
-  background-color: #daa520;
-  padding: 5px;
+.mobile-nav-item:hover {
+  background-color: #f0f0f0;
 }
 
-/* test---------------------------------------------------------------------------------------------------- */
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.75s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
-/* test---------------------------------------------------------------------------------------------------- */
-
-@media screen and (max-width: 755px) {
-  .router {
-    padding: 0;
+/* 響應式設計 - 小於 768px 時啟用 */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none; /* 隱藏大螢幕的導航連結 */
   }
 
-  .redPlus {
-    width: 100px;
-    height: 100px;
-    z-index: 300;
-    color: red;
-    position: fixed;
-    right: 1px;
-    font-size: 20px;
-    pointer-events: none;
-  }
-}
-
-@media screen and (max-width: 605px) {
-  .header {
-    height: 75px;
-    display: flex;
-    flex-wrap: wrap;
+  .menu-button {
+    display: block; /* 顯示小螢幕的漢堡菜單按鈕 */
   }
 
-  .none {
-    transform: scale(0.3);
-    height: 10px;
-    transition: all 0.4s ease;
-  }
-  .redPlus {
-    color: #ddd;
-    pointer-events: none;
+  .mobile-nav-links {
+    display: flex; /* 顯示小螢幕的導航菜單 */
   }
 }
 </style>

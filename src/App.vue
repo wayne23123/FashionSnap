@@ -1,5 +1,4 @@
 <script setup>
-import '../src/assets/main.css';
 import NavBar from './components/NavBar.vue';
 </script>
 
@@ -9,9 +8,3 @@ import NavBar from './components/NavBar.vue';
   </header>
   <router-view></router-view>
 </template>
-
-<style>
-html {
-  background-color: #c4c4c4;
-}
-</style>

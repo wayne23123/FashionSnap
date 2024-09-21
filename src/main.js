@@ -4,7 +4,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 
-import './assets/main.css';
+import './styles/reset.css';
 
 router.afterEach((to, from, next) => {
   window.scrollTo(0, 0);
