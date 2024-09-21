@@ -27,6 +27,11 @@ const router = createRouter({
       component: DemoPage,
     },
     {
+      path: '/demo/:id', // 使用動態路由 :id 來捕獲產品 id
+      name: 'demo',
+      component: DemoPage,
+    },
+    {
       path: '/about',
       name: 'about',
       component: AboutPage,
