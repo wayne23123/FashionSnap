@@ -1,17 +1,17 @@
 <script setup>
-import { ref } from "vue";
-import Footer from "../components/Footer.vue";
+import { ref } from 'vue';
+import Footer from '../components/Footer.vue';
 
 const showAboutOneRef = ref(false);
 
-window.addEventListener("scroll", function () {
+window.addEventListener('scroll', function () {
   // 當 scrollY大於0 則 showAboutOneRef 為 true
   showAboutOneRef.value = window.scrollY > 0;
 });
 
 const showAboutTwoRef = ref(false);
 
-window.addEventListener("scroll", function () {
+window.addEventListener('scroll', function () {
   // 當 scrollY大於250 則 showAboutTwoRef 為 true
   showAboutTwoRef.value = window.scrollY > 250;
 });
@@ -21,13 +21,12 @@ function toTopFunction() {
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: "smooth",
+    behavior: 'smooth',
   });
 }
 </script>
 
 <template>
-  <section class="sectionHolder"></section>
   <section class="sectionAboutUs">
     <div class="textAboutUs"><h1>關於我們</h1></div>
     <div class="imgAboutUsLayout">

@@ -37,7 +37,7 @@ const products = [
 .featured-products {
   padding: 40px;
   text-align: center;
-  background: linear-gradient(135deg, #fafafa, #f0f0f0); /* 背景漸變色 */
+  background: linear-gradient(135deg, #fafafa, #e75a5a); /* 背景漸變色 */
 }
 
 .products-grid {

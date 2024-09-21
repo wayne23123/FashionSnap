@@ -8,14 +8,14 @@ import Footer from '../components/Footer.vue';
 
 <template>
   <div>
-    <!-- Hero Banner -->
-    <HeroBanner />
-
     <!-- 輪播圖 Carousel -->
     <Carousel />
 
     <!-- 廣告橫幅 Marquee -->
     <Marquee />
+
+    <!-- Hero Banner -->
+    <HeroBanner />
 
     <!-- 推薦商品區 Featured Products -->
     <FeaturedProducts />

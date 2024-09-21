@@ -22,6 +22,7 @@ import NavBar from './components/NavBar.vue';
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .container {

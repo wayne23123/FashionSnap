@@ -1,291 +1,405 @@
-<template>
-  <div class="shop-page">
-    <!-- 搜尋與篩選區 -->
-    <div class="filter-bar">
-      <input
-        type="text"
-        v-model="searchTerm"
-        placeholder="Search products..."
-        class="search-input"
-        @input="filterProducts"
-      />
-
-      <label>
-        Category:
-        <select
-          v-model="selectedCategory"
-          @change="filterProducts"
-          class="category-select"
-        >
-          <option value="All">All</option>
-          <option value="T-shirt">T-shirt</option>
-          <option value="Jacket">Jacket</option>
-          <option value="Shoes">Shoes</option>
-          <option value="Hat">Hat</option>
-        </select>
-      </label>
-
-      <!-- 標籤篩選 -->
-      <div class="tag-filters">
-        <button
-          @click="toggleTag('New Arrival')"
-          :class="{ active: selectedTags.includes('New Arrival') }"
-        >
-          New Arrival
-        </button>
-        <button
-          @click="toggleTag('On Sale')"
-          :class="{ active: selectedTags.includes('On Sale') }"
-        >
-          On Sale
-        </button>
-        <button
-          @click="toggleTag('Popular')"
-          :class="{ active: selectedTags.includes('Popular') }"
-        >
-          Popular
-        </button>
-      </div>
-    </div>
-
-    <!-- 商品展示區 -->
-    <div class="products-grid">
-      <div
-        class="product-card"
-        v-for="(product, index) in filteredProducts"
-        :key="index"
-      >
-        <div class="product-image-wrapper">
-          <img :src="product.image" alt="product image" class="product-image" />
-        </div>
-        <h3>{{ product.name }}</h3>
-        <p>{{ product.price }}</p>
-        <div class="tags">
-          <span v-for="tag in product.tags" :key="tag" class="tag">{{
-            tag
-          }}</span>
-        </div>
-        <router-link :to="`/product/${product.id}`" class="view-details"
-          >View Details</router-link
-        >
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
+import Marquee from '../components/Marquee.vue';
+import Footer from '../components/Footer.vue';
+import CarouselShop from '../components/CarouselShop.vue';
+import { useProductionStore } from '../stores/production';
+import { useDemoStore } from '../stores/demo';
+import { useCartStore } from '../stores/cart';
+import { ElMessage } from 'element-plus';
+import 'element-plus/theme-chalk/el-message.css';
 
-const products = ref([
-  {
-    id: 1,
-    name: 'Stylish T-shirt',
-    category: 'T-shirt',
-    price: '$20',
-    image: '../assets/product1.jpg',
-    tags: ['New Arrival'],
-  },
-  {
-    id: 2,
-    name: 'Cool Jacket',
-    category: 'Jacket',
-    price: '$50',
-    image: '../assets/product2.jpg',
-    tags: ['On Sale'],
-  },
-  {
-    id: 3,
-    name: 'Comfy Shoes',
-    category: 'Shoes',
-    price: '$80',
-    image: '../assets/product3.jpg',
-    tags: ['Popular'],
-  },
-  {
-    id: 4,
-    name: 'Fashion Hat',
-    category: 'Hat',
-    price: '$30',
-    image: '../assets/product4.jpg',
-    tags: ['New Arrival', 'Popular'],
-  },
-  {
-    id: 5,
-    name: 'Summer T-shirt',
-    category: 'T-shirt',
-    price: '$22',
-    image: '../assets/product5.jpg',
-    tags: ['On Sale'],
-  },
-  {
-    id: 6,
-    name: 'Winter Jacket',
-    category: 'Jacket',
-    price: '$70',
-    image: '../assets/product6.jpg',
-    tags: ['Popular'],
-  },
-]);
+// Store setup
+const productionStore = useProductionStore();
+const demoStore = useDemoStore();
+const cartStore = useCartStore();
 
-const selectedCategory = ref('All');
-const searchTerm = ref('');
-const selectedTags = ref([]);
-
-const filteredProducts = computed(() => {
-  return products.value.filter((product) => {
-    const matchesCategory =
-      selectedCategory.value === 'All' ||
-      product.category === selectedCategory.value;
-    const matchesSearch = product.name
-      .toLowerCase()
-      .includes(searchTerm.value.toLowerCase());
-    const matchesTags =
-      selectedTags.value.length === 0 ||
-      selectedTags.value.every((tag) => product.tags.includes(tag));
-
-    return matchesCategory && matchesSearch && matchesTags;
-  });
+// 控制輪播圖顯示
+const carouselShopShowRef = ref(false);
+window.addEventListener('scroll', () => {
+  carouselShopShowRef.value = window.scrollY > 290;
 });
 
-function toggleTag(tag) {
-  if (selectedTags.value.includes(tag)) {
-    selectedTags.value = selectedTags.value.filter((t) => t !== tag);
-  } else {
-    selectedTags.value.push(tag);
-  }
+// 返回頂部
+function toTopFunction() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 用於商品的複製
+const copyRef = ref({});
+function copyCard(event, product) {
+  copyRef.value = { ...product };
+  demoStore.demos.push(copyRef.value);
+}
+
+// 控制數量和尺寸
+const amountRef = ref(1);
+const sizeRef = ref('M');
+
+// 將商品加入購物車
+function addCartsFunction() {
+  cartStore.emptyRefs.push({
+    ...copyRef.value,
+    size: sizeRef.value,
+    quantity: amountRef.value,
+  });
+  cartStore.comparisonByIdFunction();
+
+  // 加入購物車後彈出消息
+  ElMessage({
+    message: '商品已成功加入購物車！',
+    type: 'success',
+    duration: 2000,
+    showClose: true,
+  });
+}
+
+// 控制篩選欄的顯示與隱藏
+const isFilterOpen = ref(false);
+function toggleFilter() {
+  isFilterOpen.value = !isFilterOpen.value;
 }
 </script>
 
+<template>
+  <section class="shop-page">
+    <!-- 篩選切換按鈕 (小螢幕顯示) -->
+    <button @click="toggleFilter" class="filter-toggle-btn">篩選</button>
+
+    <!-- 搜尋與分類篩選 -->
+    <aside :class="['filter-section', { open: isFilterOpen }]">
+      <input
+        id="search-field"
+        v-model="productionStore.searchTerm"
+        placeholder="搜尋商品..."
+        class="search-bar"
+      />
+
+      <div class="category-filter">
+        <label for="all" :class="{ active: productionStore.searchTerm === '' }"
+          >全部商品</label
+        >
+        <input
+          id="all"
+          type="radio"
+          value=""
+          v-model="productionStore.searchTerm"
+          class="hidden-input"
+        />
+
+        <label
+          for="hat"
+          :class="{ active: productionStore.searchTerm === 'hat' }"
+          >帽子分類</label
+        >
+        <input
+          id="hat"
+          type="radio"
+          value="hat"
+          v-model="productionStore.searchTerm"
+          class="hidden-input"
+        />
+
+        <label
+          for="shoes"
+          :class="{ active: productionStore.searchTerm === 'shoes' }"
+          >鞋子分類</label
+        >
+        <input
+          id="shoes"
+          type="radio"
+          value="shoes"
+          v-model="productionStore.searchTerm"
+          class="hidden-input"
+        />
+
+        <label
+          for="clothes"
+          :class="{ active: productionStore.searchTerm === 'clothes' }"
+          >衣服分類</label
+        >
+        <input
+          id="clothes"
+          type="radio"
+          value="clothes"
+          v-model="productionStore.searchTerm"
+          class="hidden-input"
+        />
+
+        <label
+          for="pants"
+          :class="{ active: productionStore.searchTerm === 'pants' }"
+          >褲子分類</label
+        >
+        <input
+          id="pants"
+          type="radio"
+          value="pants"
+          v-model="productionStore.searchTerm"
+          class="hidden-input"
+        />
+      </div>
+    </aside>
+
+    <!-- 主要內容區 -->
+    <div class="main-content" :class="{ 'filter-open': isFilterOpen }">
+      <CarouselShop />
+
+      <!-- 商品展示區 -->
+      <div class="product-grid">
+        <div
+          v-for="product in productionStore.searchedProductionTitle"
+          :key="product.id"
+          class="product-card"
+          @mouseenter="copyCard($event, product)"
+        >
+          <router-link :to="`/demo/${product.id}`">
+            <img :src="product.img" class="product-image" />
+          </router-link>
+          <div class="product-details">
+            <h3>{{ product.title }}</h3>
+            <p>種類: {{ product.category }}</p>
+            <p>評分: {{ product.star }}</p>
+            <p>NT {{ product.price }}</p>
+          </div>
+          <div class="product-actions">
+            <select v-model="sizeRef" class="size-select">
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="S">S</option>
+            </select>
+            <select v-model="amountRef" class="quantity-select">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+            <button @click="addCartsFunction" class="add-to-cart-btn">
+              加入購物車
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 返回頂部按鈕 -->
+    <transition name="fade">
+      <button
+        v-show="carouselShopShowRef"
+        @click="toTopFunction"
+        class="to-top-btn"
+      >
+        ▲
+      </button>
+    </transition>
+  </section>
+  <!-- 頁面底部 -->
+  <Footer />
+</template>
+
 <style scoped>
 .shop-page {
+  display: flex;
+  width: 100vw;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
-  background-color: #f8f9fa;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-height: 100vh; /* 保證父容器有足夠高度進行滾動 */
+  overflow: visible; /* 確保父容器不會隱藏溢出的內容 */
 }
 
-.filter-bar {
+.filter-toggle-btn {
+  display: none;
+}
+
+.filter-section {
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  z-index: 1;
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 20px; /* 設定到頁面頂部的距離 */
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+}
+
+.category-filter {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.search-input {
-  padding: 10px;
-  font-size: 1.2rem;
-  width: 100%;
-  max-width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.category-select {
-  padding: 10px;
-  font-size: 1.1rem;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-}
-
-.tag-filters {
-  display: flex;
   gap: 10px;
 }
 
-.tag-filters button {
+.category-filter label {
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+.hidden-input {
+  display: none; /* 隱藏 radio input */
+}
+
+label {
   padding: 10px 15px;
+  border-radius: 5px;
   border: 1px solid #ddd;
-  border-radius: 15px;
-  background-color: #f0f0f0;
   cursor: pointer;
-  transition: all 0.3s ease;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
 }
 
-.tag-filters button.active {
-  background-color: #ff6347;
-  color: white;
-  border-color: #ff6347;
-}
-
-.tag-filters button:hover {
-  background-color: #ff4500;
+label.active {
+  background-color: #ff6f61; /* 選中時的背景色 */
   color: white;
 }
 
-/* 商品展示區設計 */
-.products-grid {
+label:hover {
+  background-color: #ff543a; /* hover 時的背景色 */
+  color: white;
+}
+
+.main-content {
+  width: 75vw;
+  max-width: 1140px;
+  transition: transform 0.3s ease;
+}
+
+/* 商品展示區 */
+.product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  justify-items: center;
+  margin-top: 20px;
 }
 
 .product-card {
-  width: 100%;
-  max-width: 280px;
-  padding: 15px;
   background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
 }
 
 .product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.product-image-wrapper {
-  overflow: hidden;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  transform: translateY(-5px);
 }
 
 .product-image {
   width: 100%;
-  height: 200px;
+  height: auto;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
 }
 
-.product-card:hover .product-image {
-  transform: scale(1.1);
+.product-image:hover {
+  transform: scale(1.05);
 }
 
-.tags {
+.product-details {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
 }
 
-.tag {
-  display: inline-block;
-  background-color: #e9ecef;
-  color: #495057;
-  padding: 5px 10px;
-  border-radius: 10px;
-  margin: 5px;
-  font-size: 0.9rem;
+.size-select,
+.quantity-select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 
-.view-details {
-  padding: 10px 20px;
-  background-color: #007bff;
+.add-to-cart-btn {
+  background-color: #ff6f61;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #ff543a;
+}
+
+.to-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff6f61;
   color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  display: inline-block;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-.view-details:hover {
-  background-color: #0056b3;
+.to-top-btn:hover {
+  background-color: #ff543a;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+/* 小螢幕篩選區隱藏與開啟 */
+@media screen and (max-width: 768px) {
+  .filter-section {
+    position: fixed;
+    left: 0;
+    top: 160px; /* 避免與其他 header 重疊 */
+    height: calc(100% - 60px);
+    width: 100%; /* 固定為螢幕寬度的 80% */
+    background-color: #f5f5f5;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out; /* 添加過渡效果 */
+    z-index: 1000; /* 保持篩選區在最上層 */
+  }
+
+  .main-content {
+    width: 100%; /* 小螢幕時調整為100%寬度 */
+    transition: transform 0.3s ease-in-out; /* 添加滑動過渡效果 */
+  }
+
+  .filter-section.open {
+    transform: translateX(0); /* 滑入顯示 */
+  }
+
+  .main-content.filter-open {
+    transform: translateX(80%); /* 當篩選區打開時，內容右移 */
+  }
+
+  .filter-toggle-btn {
+    display: block;
+    position: fixed;
+    left: 10px;
+    top: 100px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001; /* 保持在篩選區前面 */
+  }
 }
 </style>
