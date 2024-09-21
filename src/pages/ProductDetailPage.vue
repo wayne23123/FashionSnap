@@ -1,38 +1,12 @@
-<template>
-  <div class="product-detail">
-    <div class="product-container">
-      <!-- 商品圖片區 -->
-      <div class="product-image-wrapper">
-        <img :src="product.image" alt="product image" class="product-image" />
-      </div>
-
-      <!-- 商品信息區 -->
-      <div class="product-info">
-        <h1>{{ product.name }}</h1>
-        <p class="product-price">{{ product.price }}</p>
-        <p class="product-description">{{ product.description }}</p>
-
-        <!-- 標籤展示 -->
-        <div class="product-tags">
-          <span v-for="tag in product.tags" :key="tag" class="product-tag">{{
-            tag
-          }}</span>
-        </div>
-
-        <!-- 加入購物車按鈕 -->
-        <button class="add-to-cart" @click="addToCart(product)">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
+import { useCartStore } from '../stores/useCartStore';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-// 模擬的商品數據
+const route = useRoute();
+const cartStore = useCartStore();
+
+// 模擬商品數據
 const products = [
   {
     id: 1,
@@ -50,52 +24,34 @@ const products = [
     description: 'A cool jacket for your winter wardrobe.',
     tags: ['On Sale'],
   },
-  {
-    id: 3,
-    name: 'Comfy Shoes',
-    price: '$80',
-    image: '../assets/product3.jpg',
-    description: 'Comfortable shoes for everyday wear.',
-    tags: ['Popular'],
-  },
-  {
-    id: 4,
-    name: 'Fashion Hat',
-    price: '$30',
-    image: '../assets/product4.jpg',
-    description: 'A trendy hat for fashion lovers.',
-    tags: ['New Arrival', 'Popular'],
-  },
-  {
-    id: 5,
-    name: 'Summer T-shirt',
-    price: '$22',
-    image: '../assets/product5.jpg',
-    description: 'Perfect for summer days.',
-    tags: ['On Sale'],
-  },
-  {
-    id: 6,
-    name: 'Winter Jacket',
-    price: '$70',
-    image: '../assets/product6.jpg',
-    description: 'A warm jacket for winter.',
-    tags: ['Popular'],
-  },
 ];
 
-// 接收路由傳遞的 props
-const route = useRoute();
+// 獲取當前商品的 ID
 const productId = route.params.id;
-
-// 根據商品ID找到對應的商品
 const product = products.find((p) => p.id === parseInt(productId));
 
-// 模擬加入購物車的功能
-function addToCart(product) {
+// 添加到購物車
+function addToCart() {
+  cartStore.addToCart(product);
   alert(`${product.name} has been added to your cart!`);
 }
 </script>
+
+<template>
+  <div class="product-detail">
+    <div class="product-container">
+      <div class="product-image-wrapper">
+        <img :src="product.image" alt="product image" class="product-image" />
+      </div>
+      <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="product-price">{{ product.price }}</p>
+        <p class="product-description">{{ product.description }}</p>
+        <button class="add-to-cart" @click="addToCart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .product-detail {

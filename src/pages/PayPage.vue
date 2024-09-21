@@ -2,73 +2,73 @@
   <div class="pay-page">
     <h1>Checkout</h1>
 
-    <!-- 購物總額顯示 -->
+    <!-- 訂單摘要 -->
     <div class="order-summary">
       <h2>Order Summary</h2>
-      <p>Total: {{ totalPrice }}</p>
+      <div v-for="(item, index) in cartItems" :key="index" class="order-item">
+        <p>
+          {{ item.name }} - Quantity: {{ item.quantity }} - Price:
+          {{ item.price }}
+        </p>
+      </div>
+      <h3>Total: {{ totalPrice }}</h3>
     </div>
 
-    <!-- 用戶支付與運送信息 -->
-    <div class="payment-form">
-      <h2>Shipping Information</h2>
-      <form @submit.prevent="processPayment">
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <input v-model="shippingInfo.name" type="text" id="name" required />
-        </div>
-        <div class="form-group">
-          <label for="address">Shipping Address</label>
-          <input
-            v-model="shippingInfo.address"
-            type="text"
-            id="address"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            v-model="shippingInfo.email"
-            type="email"
-            id="email"
-            required
-          />
-        </div>
-
-        <!-- 提交按鈕 -->
-        <button type="submit" class="pay-btn">Submit Payment</button>
-      </form>
+    <!-- 支付方式選擇 -->
+    <div class="payment-method">
+      <h2>Payment Method</h2>
+      <label>
+        <input
+          type="radio"
+          v-model="selectedPaymentMethod"
+          value="Credit Card"
+        />
+        Credit Card
+      </label>
+      <label>
+        <input type="radio" v-model="selectedPaymentMethod" value="PayPal" />
+        PayPal
+      </label>
+      <label>
+        <input
+          type="radio"
+          v-model="selectedPaymentMethod"
+          value="Bank Transfer"
+        />
+        Bank Transfer
+      </label>
     </div>
+
+    <!-- 提交按鈕 -->
+    <button @click="submitOrder" class="pay-btn">Submit Order</button>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useCartStore } from '../stores/cartStore';
 
-// 模擬的購物車數據
-const cartItems = ref([
-  { id: 1, name: 'Stylish T-shirt', price: '$20', quantity: 1 },
-  { id: 2, name: 'Cool Jacket', price: '$50', quantity: 1 },
-]);
+const cartStore = useCartStore();
 
 // 計算總價
 const totalPrice = computed(() => {
-  return cartItems.value.reduce((total, item) => {
+  return cartStore.cartItems.reduce((total, item) => {
     return total + parseFloat(item.price.slice(1)) * item.quantity;
   }, 0);
 });
 
-// 用戶的運送信息
-const shippingInfo = ref({
-  name: '',
-  address: '',
-  email: '',
-});
+// 模擬選擇的支付方式
+const selectedPaymentMethod = ref('Credit Card');
 
-// 處理支付
-function processPayment() {
-  alert(`Payment processed for ${shippingInfo.value.name}!`);
-  // 這裡可以調用支付 API 或重定向至支付網關
+// 提交訂單
+function submitOrder() {
+  if (!selectedPaymentMethod.value) {
+    alert('Please select a payment method.');
+    return;
+  }
+  alert(`Order submitted with payment method: ${selectedPaymentMethod.value}`);
+  // 模擬支付成功後跳轉到訂單確認頁面
+  // 可以用 router.push() 跳轉到訂單確認頁面
 }
 </script>
 
@@ -87,28 +87,16 @@ function processPayment() {
   margin-bottom: 40px;
 }
 
-.payment-form {
+.order-item {
+  margin-bottom: 10px;
+}
+
+.payment-method {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
   margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
 }
 
 .pay-btn {
