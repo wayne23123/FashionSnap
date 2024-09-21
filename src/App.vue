@@ -18,7 +18,7 @@ import NavBar from './components/NavBar.vue';
 
 <style scoped>
 .layout {
-  background-image: url('@/assets/pictures/shop01.webp');
+  background-image: url('@/assets/pictures/tree01.jpeg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

@@ -54,188 +54,181 @@ function pushAdminCart() {
 </script>
 
 <template>
-  <section class="sectionHolder"></section>
-  <section class="sectionBuyProcess">
-    <div class="buyProcessLayout">
-      <div class="processDivOne">step1.確認購物清單</div>
-      <div class="processDivTwo">step2.填寫購買資料</div>
-      <div class="processDivThree">step3.付款去</div>
-    </div>
-  </section>
-  <section v-show="sectionDebugRef" class="sectionDebug">
-    <div>pays的狀態{{ payStore.pays }}</div>
-  </section>
-  <section class="sectionPay">
-    <div class="payLayout">
-      <div class="payCard">
-        <table>
-          <tr>
-            <th>品項</th>
-            <th>尺寸</th>
-            <th>數量</th>
-            <th>單價</th>
-          </tr>
-          <tr v-for="pay in payStore.pays" :key="pay.key">
-            <td>{{ pay.title }}</td>
-            <td>{{ pay.size }}</td>
-            <td>{{ pay.counter }}</td>
-            <td v-if="payStore.pays[0].kupeng">
-              <div class="noneText">{{ pay.price * pay.counter }}</div>
-              <div class="yellowMarkPrice">
-                {{ Math.floor(pay.price * pay.counter * 0.7) }}
-              </div>
-            </td>
-            <td v-else="payStore.pays[0].kupeng">
-              <div>{{ pay.price * pay.counter }}</div>
-            </td>
-          </tr>
-        </table>
-        <div>
-          <div v-show="payStore.pays[0].kupeng">
-            <div class="useKupeng yellowMark">使用了優惠券!</div>
-          </div>
-          <div v-if="payStore.pays[0].kupeng">
-            <div class="cartsTotalCounter">
-              總共 {{ cartsTotalCounter }} 件商品
+  <div class="payPageLayout">
+    <section class="sectionBuyProcess">
+      <div class="buyProcessLayout">
+        <div class="processDivOne">step1.確認購物清單</div>
+        <div class="processDivTwo">step2.填寫購買資料</div>
+        <div class="processDivThree">step3.付款去</div>
+      </div>
+    </section>
+    <section v-show="sectionDebugRef" class="sectionDebug">
+      <div>pays的狀態{{ payStore.pays }}</div>
+    </section>
+    <section class="sectionPay">
+      <div class="payLayout">
+        <div class="payCard">
+          <table>
+            <tr>
+              <th>品項</th>
+              <th>尺寸</th>
+              <th>數量</th>
+              <th>單價</th>
+            </tr>
+            <tr v-for="pay in payStore.pays" :key="pay.key">
+              <td>{{ pay.title }}</td>
+              <td>{{ pay.size }}</td>
+              <td>{{ pay.counter }}</td>
+              <td v-if="payStore.pays[0].kupeng">
+                <div class="noneText">{{ pay.price * pay.counter }}</div>
+                <div class="yellowMarkPrice">
+                  {{ Math.floor(pay.price * pay.counter * 0.7) }}
+                </div>
+              </td>
+              <td v-else="payStore.pays[0].kupeng">
+                <div>{{ pay.price * pay.counter }}</div>
+              </td>
+            </tr>
+          </table>
+          <div>
+            <div v-show="payStore.pays[0].kupeng">
+              <div class="useKupeng yellowMark">使用了優惠券!</div>
+            </div>
+            <div v-if="payStore.pays[0].kupeng">
+              <div class="cartsTotalCounter">
+                總共 {{ cartsTotalCounter }} 件商品
 
-              <div>
-                <div class="noneText">原價 NT {{ cartsTotalPrice }} 元</div>
-                <div class="yellowMark">
-                  特價 NT {{ Math.floor(cartsTotalPrice * 0.7) }} 元
+                <div>
+                  <div class="noneText">原價 NT {{ cartsTotalPrice }} 元</div>
+                  <div class="yellowMark">
+                    特價 NT {{ Math.floor(cartsTotalPrice * 0.7) }} 元
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div v-else>
-            <div class="cartsTotal">
-              <div>總共 {{ cartsTotalCounter }} 件商品</div>
-              <div>總共 NT {{ cartsTotalPrice }} 元</div>
+            <div v-else>
+              <div class="cartsTotal">
+                <div>總共 {{ cartsTotalCounter }} 件商品</div>
+                <div>總共 NT {{ cartsTotalPrice }} 元</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div v-for="(pay, index) in payStore.pays" :key="index">
-          <div v-if="index === 0" class="formPadding">
-            Email: {{ pay.email }}
-          </div>
-          <div v-if="index === 0" class="formPadding">姓名: {{ pay.name }}</div>
-          <div v-if="index === 0" class="formPadding">
-            收件人電話: {{ pay.telphone }}
-          </div>
-          <div v-if="index === 0" class="formPadding">
-            收件人地址: {{ pay.adress }}
-          </div>
-          <div v-if="index === 0" class="formPadding payCheck">
-            付款狀態:
-            <div v-if="payCheckRef">
-              付款成功,感謝您的購買,我們會盡快將商品寄出
+          <div v-for="(pay, index) in payStore.pays" :key="index">
+            <div v-if="index === 0" class="formPadding">
+              Email: {{ pay.email }}
             </div>
-            <div v-else>尚未付款</div>
+            <div v-if="index === 0" class="formPadding">
+              姓名: {{ pay.name }}
+            </div>
+            <div v-if="index === 0" class="formPadding">
+              收件人電話: {{ pay.telphone }}
+            </div>
+            <div v-if="index === 0" class="formPadding">
+              收件人地址: {{ pay.adress }}
+            </div>
+            <div v-if="index === 0" class="formPadding payCheck">
+              付款狀態:
+              <div v-if="payCheckRef">
+                付款成功,感謝您的購買,我們會盡快將商品寄出
+              </div>
+              <div v-else>尚未付款</div>
+            </div>
           </div>
-        </div>
-        <div v-if="payCheckRef">
-          <router-link to="/shop">回到商城繼續逛逛</router-link>
-        </div>
-        <div v-else class="goShop">
-          <router-link to="/form">上一步</router-link>
-          <button @click="sendOrderFunction" class="a">送出訂單</button>
+          <div v-if="payCheckRef">
+            <router-link to="/shop">回到商城繼續逛逛</router-link>
+          </div>
+          <div v-else class="goShop">
+            <router-link to="/form">上一步</router-link>
+            <button @click="sendOrderFunction" class="a">送出訂單</button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="footerHolder"></section>
+    </section>
+  </div>
   <Footer />
 </template>
 
 <style scoped>
-.sectionHolder {
-  height: 100px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
-}
-.sectionDebug {
-  display: flex;
-  background-color: black;
-  color: green;
-  width: 100%;
-  height: 50vh;
+.payPageLayout {
+  background-image: url('@/assets/pictures/shop03.webp');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
-.sectionDebug button {
-  background-color: green;
-}
 .sectionBuyProcess {
   width: 100vw;
   max-width: 100%;
-  background-color: #daa520;
+  /* background-color: #f5a623; */
   display: flex;
   justify-content: center;
+  padding: 20px 0;
 }
 
 .buyProcessLayout {
-  width: 60vw;
-  background-color: #daa520;
+  width: 60%;
   display: flex;
   justify-content: space-around;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
-.processDivOne {
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-  color: black;
-  background-color: #ddd;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.processDivTwo {
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-
-  color: black;
-  background-color: #ddd;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+.processDivOne,
+.processDivTwo,
 .processDivThree {
   width: 200px;
   height: 100px;
-  margin: 10px;
-  color: rgb(200, 200, 200);
-  background-color: rgb(0, 0, 0);
-  border-radius: 15px;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.processDivThree {
+  background-color: #333;
+  color: white;
 }
 
 .sectionPay {
-  width: 100vw;
-  max-width: 100%;
-
-  background-color: #daa520;
+  width: 100%;
+  /* background-color: #f5a623; */
+  padding: 20px;
   display: flex;
   justify-content: center;
 }
 
 .payLayout {
-  width: 500px;
+  width: 100%;
+  max-width: 600px;
 }
+
 .payCard {
-  background-color: #c4c4c4;
-  color: black;
-  padding: 50px;
-  border-radius: 15px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payCard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #f7f7f7;
+  font-weight: bold;
 }
 
 td {
@@ -243,71 +236,72 @@ td {
 }
 
 .useKupeng {
-  margin: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffe082;
+  border-radius: 5px;
+  color: #333;
 }
 
-.yellowMarkPrice {
-  background-color: #daa520;
-}
-
+.yellowMarkPrice,
 .yellowMark {
-  background-color: #daa520;
-  width: 130px;
+  background-color: #f5a623;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 
-.cartsTotalCounter {
-  margin: 10px;
+.cartsTotalCounter,
+.cartsTotal {
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #fafafa;
+  border-radius: 5px;
   display: flex;
   justify-content: space-between;
 }
+
 .noneText {
   text-decoration: line-through;
-}
-
-.cartsTotal {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
+  color: #999;
 }
 
 .formPadding {
+  margin: 10px 0;
   padding: 10px;
+  background-color: #f7f7f7;
+  border-radius: 5px;
 }
 
-td {
-  padding: 15px;
+a,
+button {
+  background-color: #f5a623;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-a {
-  background-color: #daa520;
-  margin: 15px;
-  padding: 10px;
-}
-
-a:hover {
-  color: green;
-}
-
-.a {
-  background-color: #daa520;
-  margin: 15px;
-  padding: 10px;
-}
-
-.a:hover {
-  color: green;
+a:hover,
+button:hover {
+  background-color: #e68a00;
 }
 
 .payCheck {
   display: flex;
+  margin-top: 10px;
 }
 
 .goShop {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
+
 .footerHolder {
-  height: 10vh;
-  background-color: #daa520;
+  height: 60px;
+  background-color: #f5a623;
 }
 </style>

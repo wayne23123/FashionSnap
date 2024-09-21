@@ -21,10 +21,10 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 // 滾動內容
 const messages = ref([
-  'Flash Sale! Up to 50% off on selected items!',
-  'New arrivals are here! Check them out now!',
-  'Free shipping on orders over $100!',
-  'Limited-time offer: Buy one, get one free!',
+  '時尚快訊！限時新品優惠中，快來搶購！',
+  '全新設計，潮流單品限量登場，立刻探索！',
+  '立即輸入優惠碼 open 享有全場 8 折優惠！',
+  '熱賣商品補貨中，快來選購你的夢幻單品！',
 ]);
 
 const marqueeTrack = ref(null);

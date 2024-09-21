@@ -41,7 +41,7 @@ function addCartsFunction() {
   cartStore.emptyRefs.push({
     ...copyRef.value,
     size: sizeRef.value,
-    quantity: amountRef.value,
+    counter: amountRef.value,
   });
   cartStore.comparisonByIdFunction();
 

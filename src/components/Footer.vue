@@ -23,7 +23,7 @@
         </router-link>
       </div>
 
-      <div class="centerWord"><div>© Wayne Lu 2023</div></div>
+      <div class="centerWord"><div>© Wayne Lu 2024</div></div>
       <div class="centerWord"><div>本網頁僅供學習使用 無任何商業用途</div></div>
     </div>
   </section>

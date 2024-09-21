@@ -64,146 +64,140 @@ function useKupengFunction() {
 <template>
   <Marquee />
 
-  <section class="sectionBuyProcess">
-    <div class="buyProcessLayout">
-      <div class="processDivOne">step1.確認購物清單</div>
-      <div class="processDivTwo">step2.填寫購買資料</div>
-      <div class="processDivThree">step3.付款去</div>
-    </div>
-  </section>
-  <section class="sectionCart">
-    <div class="sectionTable">
-      <table>
-        <thead>
-          <tr>
-            <th>REMOVE</th>
-            <th>IMAGE</th>
-            <th>PRODUCT</th>
-            <th>PRICE</th>
-            <th>SIZE</th>
-            <th>QUANTITY</th>
-            <th>SUBTOTAL</th>
-          </tr>
-        </thead>
-        <TransitionGroup name="fade" tag="tbody">
-          <tr v-for="cart in cartStore.carts" :key="cart.id">
-            <td>
-              <button
-                @click="cartStore.removeCartItemById(cart.id, cart.size)"
-                class="removeButton"
-              >
-                Remove
-              </button>
-            </td>
-            <td><img :src="cart.img" alt="" width="100" height="110" /></td>
-            <td>{{ cart.title }}</td>
-            <td>NT {{ cart.price }} 元</td>
-            <td>{{ cart.size }}</td>
-            <td>
-              <button
-                @click="cartStore.decreaseCartItemById(cart.id, cart.size)"
-                class="addLeft"
-              >
-                -1
-              </button>
-              {{ cart.counter }} 件
-              <button
-                @click="cartStore.increaseCartItemById(cart.id, cart.size)"
-                class="addRight"
-              >
-                +1
-              </button>
-            </td>
-            <td v-if="useKupengRef">
-              <div class="textNone">
-                原價 NT {{ cart.counter * cart.price }} 元
-              </div>
-              <div class="yellow">
-                特價 NT {{ Math.floor(cart.counter * cart.price * 0.7) }} 元
-              </div>
-            </td>
-            <td v-else>價格 NT {{ cart.counter * cart.price }} 元</td>
-          </tr>
-        </TransitionGroup>
-      </table>
-    </div>
-  </section>
-  <section class="sectionInputKupeng">
-    <div class="sectionInputKupengLayout">
-      <div class="inputKupeng">
-        <input v-model="inputKupengRef" type="text" placeholder="輸入優惠碼" />
-        <button @click="useKupengFunction" class="nputKupengButton">
-          套用優惠碼
+  <div class="cartPageLayout">
+    <section class="sectionBuyProcess">
+      <div class="buyProcessLayout">
+        <div class="processDivOne">step1.確認購物清單</div>
+        <div class="processDivTwo">step2.填寫購買資料</div>
+        <div class="processDivThree">step3.付款去</div>
+      </div>
+    </section>
+    <section class="sectionCart">
+      <div class="sectionTable">
+        <table>
+          <thead>
+            <tr>
+              <th>REMOVE</th>
+              <th>IMAGE</th>
+              <th>PRODUCT</th>
+              <th>PRICE</th>
+              <th>SIZE</th>
+              <th>QUANTITY</th>
+              <th>SUBTOTAL</th>
+            </tr>
+          </thead>
+          <TransitionGroup name="fade" tag="tbody">
+            <tr v-for="cart in cartStore.carts" :key="cart.id">
+              <td>
+                <button
+                  @click="cartStore.removeCartItemById(cart.id, cart.size)"
+                  class="removeButton"
+                >
+                  Remove
+                </button>
+              </td>
+              <td><img :src="cart.img" alt="" width="100" height="110" /></td>
+              <td>{{ cart.title }}</td>
+              <td>NT {{ cart.price }} 元</td>
+              <td>{{ cart.size }}</td>
+              <td>
+                <button
+                  @click="cartStore.decreaseCartItemById(cart.id, cart.size)"
+                  class="addLeft"
+                >
+                  -1
+                </button>
+                {{ cart.counter }} 件
+                <button
+                  @click="cartStore.increaseCartItemById(cart.id, cart.size)"
+                  class="addRight"
+                >
+                  +1
+                </button>
+              </td>
+              <td v-if="useKupengRef">
+                <div class="textNone">
+                  原價 NT {{ cart.counter * cart.price }} 元
+                </div>
+                <div class="yellow">
+                  特價 NT {{ Math.floor(cart.counter * cart.price * 0.7) }} 元
+                </div>
+              </td>
+              <td v-else>價格 NT {{ cart.counter * cart.price }} 元</td>
+            </tr>
+          </TransitionGroup>
+        </table>
+      </div>
+    </section>
+    <section class="sectionInputKupeng">
+      <div class="sectionInputKupengLayout">
+        <div class="inputKupeng">
+          <input
+            v-model="inputKupengRef"
+            type="text"
+            placeholder="輸入優惠碼"
+          />
+          <button @click="useKupengFunction" class="nputKupengButton">
+            套用優惠碼
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="sectionTotal">
+      <div class="sectionTotalLayout">
+        <button @click="cartStore.clearCartFunction()" class="totalLeftButton">
+          清除購物車
         </button>
-      </div>
-    </div>
-  </section>
-  <section class="sectionTotal">
-    <div class="sectionTotalLayout">
-      <button @click="cartStore.clearCartFunction()" class="totalLeftButton">
-        清除購物車
-      </button>
 
-      <div>
-        <transition name="fade" tag="div" class="POA">
-          <div v-if="useKupengRef">
-            <div class="totalUse">使用了優惠碼</div>
-            <div class="totalPrice">目前購物車總共 {{ total }} 件商品，</div>
-            <div class="totalPriceTop">原本 NT {{ totalPrice }} 元</div>
-            <div class="totalPriceBottom">
-              特價 NT {{ Math.floor(totalPrice * 0.7) }} 元
+        <div>
+          <transition name="fade" tag="div" class="POA">
+            <div v-if="useKupengRef">
+              <div class="totalUse">使用了優惠碼</div>
+              <div class="totalPrice">目前購物車總共 {{ total }} 件商品，</div>
+              <div class="totalPriceTop">原本 NT {{ totalPrice }} 元</div>
+              <div class="totalPriceBottom">
+                特價 NT {{ Math.floor(totalPrice * 0.7) }} 元
+              </div>
             </div>
-          </div>
-          <div v-else>
-            目前購物車總共 {{ total }} 件商品，總共 NT {{ totalPrice }} 元
-          </div>
-        </transition>
-      </div>
+            <div v-else>
+              目前購物車總共 {{ total }} 件商品，總共 NT {{ totalPrice }} 元
+            </div>
+          </transition>
+        </div>
 
-      <div>
-        <transition name="fade" tag="div" class="totalRightButton">
-          <router-link
-            v-if="cartStore.cartsHasProductionFunction()"
-            @mouseenter="copyStepOne"
-            to="/form"
-            class="router"
-            >前去結帳</router-link
-          >
-          <router-link
-            v-else
-            @mouseenter="copyStepOne"
-            to="/shop"
-            class="router"
-          >
-            <div>到商城看新商品</div>
-          </router-link>
-        </transition>
+        <div>
+          <transition name="fade" tag="div" class="totalRightButton">
+            <router-link
+              v-if="cartStore.cartsHasProductionFunction()"
+              @mouseenter="copyStepOne"
+              to="/form"
+              class="router"
+              >前去結帳</router-link
+            >
+            <router-link
+              v-else
+              @mouseenter="copyStepOne"
+              to="/shop"
+              class="router"
+            >
+              <div>到商城看新商品</div>
+            </router-link>
+          </transition>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section v-show="sectionDebugRef" class="sectionDebug">
-    <div>stepones 訂單的狀態{{ emptyCopyCartsRef }}</div>
-    <div v-for="cart in cartStore.carts" :key="cart.id">
-      carts的狀態{{ cart }}
-    </div>
-  </section>
-  <section class="footerHolder"></section>
+    </section>
+  </div>
   <Footer />
 </template>
 
 <style scoped>
-.sectionDebug {
-  display: flex;
-  background-color: black;
-  color: green;
-  width: 100%;
-  height: 60vh;
+.cartPageLayout {
+  background-image: url('@/assets/pictures/shop03.webp');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
-.sectionDebug button {
-  background-color: green;
-}
 .sectionHolder {
   height: 110px;
   width: 100vw;
@@ -214,54 +208,39 @@ function useKupengFunction() {
 .sectionBuyProcess {
   width: 100vw;
   max-width: 100%;
-  background-color: #daa520;
   display: flex;
   justify-content: center;
 }
 
 .buyProcessLayout {
-  width: 60vw;
-  background-color: #daa520;
+  width: 60%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding: 20px 0;
 }
 
-.processDivOne {
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-  color: rgb(200, 200, 200);
-  background-color: rgb(0, 0, 0);
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.processDivTwo {
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-  color: black;
-  background-color: #ddd;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+.processDivOne,
+.processDivTwo,
 .processDivThree {
   width: 200px;
   height: 100px;
-  margin: 10px;
-  color: black;
-  background-color: #ddd;
-  border-radius: 15px;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
+
+.processDivOne {
+  background-color: #333;
+  color: #fff;
+}
+
 .sectionCart {
   width: 100vw;
   max-width: 100%;
@@ -334,7 +313,7 @@ td {
   padding: 10px 20px;
   background-color: #daa520;
   border: none;
-  color: white;
+  color: rgb(0, 0, 0);
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -342,6 +321,7 @@ td {
 
 .nputKupengButton:hover {
   background-color: #aa0000;
+  color: rgb(255, 255, 255);
 }
 
 .sectionTotal {
@@ -357,7 +337,6 @@ td {
 .sectionTotalLayout {
   width: 60vw;
   height: 190px;
-  /* background-color: #fff; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -371,7 +350,7 @@ td {
 
 .totalLeftButton:hover {
   background-color: #aa0000;
-  color: black;
+  color: rgb(255, 255, 255);
   transition: all 0.6s ease;
 }
 
@@ -420,9 +399,9 @@ a:hover {
 .addLeft,
 .addRight {
   padding: 8px 12px;
-  background-color: #c29116;
+  background-color: #daa520;
   border: none;
-  color: white;
+  color: rgb(0, 0, 0);
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -432,6 +411,7 @@ a:hover {
 .addLeft:hover,
 .addRight:hover {
   background-color: #aa0000;
+  color: #fff;
 }
 
 .yellow {

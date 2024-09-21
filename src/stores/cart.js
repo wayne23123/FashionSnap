@@ -1,36 +1,36 @@
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
+import { ref, computed } from 'vue';
+import { defineStore } from 'pinia';
 
-export const useCartStore = defineStore("carts", () => {
+export const useCartStore = defineStore('carts', () => {
   const carts = ref([
     {
       id: 1,
-      order: "",
-      img: "./src/assets/imgs/w001.jpg",
-      title: "燈芯絨水手帽",
-      category: "hat",
-      star: "★★★★",
+      order: '',
+      img: './src/assets/imgs/w001.jpg',
+      title: '燈芯絨水手帽',
+      category: 'hat',
+      star: '★★★★',
       stars: 4,
       price: 1200,
       description:
-        "粗條燈芯絨；主題繡花，為今年聖誕設計的幾何小圖；男女皆可戴。",
-      color: "orange",
-      label: "Other",
+        '粗條燈芯絨；主題繡花，為今年聖誕設計的幾何小圖；男女皆可戴。',
+      color: 'orange',
+      label: 'Other',
       counter: 1,
-      size: "M",
+      size: 'M',
       kupeng: false,
-      email: "",
-      name: "",
-      telphone: "",
-      adress: "",
-      message: "",
-      d: "",
-      year: "",
-      month: "",
-      date: "",
-      hours: "",
-      minutes: "",
-      seconds: "",
+      email: '',
+      name: '',
+      telphone: '',
+      adress: '',
+      message: '',
+      d: '',
+      year: '',
+      month: '',
+      date: '',
+      hours: '',
+      minutes: '',
+      seconds: '',
       pay: false,
       complete: false,
     },
@@ -46,13 +46,14 @@ export const useCartStore = defineStore("carts", () => {
     // 用forEach對 emptyRefs 陣列中的每筆資料進行比較
     emptyRefs.value.forEach((emptyRef) => {
       const existingProduct = this.carts.find(
-        (product) =>
-          product.id === emptyRef.id && product.size === emptyRef.size
+        (product) => product.id == emptyRef.id && product.size == emptyRef.size
         // 判斷只有當 product.id 和 product.size 都相等 emptyRef 時才返回 true
       );
       if (existingProduct) {
-        // 如果商品已經存在在 carts 陣列中，則將數量 counter 加上 emptyRefs 的數量
-        existingProduct.counter += emptyRef.counter;
+        console.log(1);
+        console.log(emptyRef);
+        // 使用 Number() 確保 counter 是數字，避免字串拼接
+        existingProduct.counter += Number(emptyRef.counter);
       } else {
         // 如果不存在，則將這筆資料加入到 carts 陣列中
         this.carts.push({
@@ -124,7 +125,7 @@ export const useCartStore = defineStore("carts", () => {
   // 根據商品 id 與尺寸來增加購物車裡的商品數量
   function increaseCartItemById(id, size) {
     const product = carts.value.find(
-      (product) => product.id === id && product.size === size
+      (product) => product.id == id && product.size == size
     );
     if (product) {
       product.counter++;
@@ -140,7 +141,7 @@ export const useCartStore = defineStore("carts", () => {
       if (product.counter > 1) {
         product.counter--;
       } else {
-        removeCartItemById(id);
+        removeCartItemById(id, size);
       }
     }
   }

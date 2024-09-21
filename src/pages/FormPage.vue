@@ -132,190 +132,179 @@ function pushPayFunction() {
 </script>
 
 <template>
-  <section class="sectionHolder"></section>
-  <section class="sectionBuyProcess">
-    <div class="buyProcessLayout">
-      <div class="processDivOne">step1.確認購物清單</div>
-      <div class="processDivTwo">step2.填寫購買資料</div>
-      <div class="processDivThree">step3.付款去</div>
-    </div>
-  </section>
-  <section v-show="sectionDebugRef" class="sectionDebug">
-    <div>{{ steponeStore.stepones }}</div>
-  </section>
-  <section class="sectionCart">
-    <div class="formLayout">
-      <div class="formWidth">
-        <br />
-
-        <div>姓名:</div>
-        <input @input="inputName" type="text" class="formMargin" />
-
-        <div>電話:</div>
-        <input @input="inputTelphone" type="number" class="formMargin" />
-
-        <div>email:</div>
-        <input @input="inputEmail" type="email" class="formMargin" />
-
-        <div>地址:</div>
-        <input @input="inputinputAdress" type="text" class="formMargin" />
-        <div>留言 (有什麼想告訴我們的請備註在此)</div>
-        <textarea
-          @input="inputinputMessage"
-          cols="30"
-          rows="10"
-          class="formMargin"
-        ></textarea>
-        <div class="formButtonLayout">
-          <router-link to="/cart" class="goCart">上一步</router-link>
-          <router-link @mouseenter="pushPayFunction" to="/pay" class="goPay"
-            >付款去</router-link
-          >
-        </div>
-
-        <div v-show="sectionDebugRef">{{ payStore.pays }}</div>
+  <div class="formPageLayout">
+    <section class="sectionBuyProcess">
+      <div class="buyProcessLayout">
+        <div class="processDivOne">step1.確認購物清單</div>
+        <div class="processDivTwo">step2.填寫購買資料</div>
+        <div class="processDivThree">step3.付款去</div>
       </div>
-    </div>
-  </section>
-  <section class="footerHolder"></section>
+    </section>
+    <section v-show="sectionDebugRef" class="sectionDebug">
+      <div>{{ steponeStore.stepones }}</div>
+    </section>
+    <section class="sectionCart">
+      <div class="formLayout">
+        <div class="formWidth">
+          <br />
+
+          <div>姓名:</div>
+          <input @input="inputName" type="text" class="formMargin" />
+
+          <div>電話:</div>
+          <input @input="inputTelphone" type="number" class="formMargin" />
+
+          <div>email:</div>
+          <input @input="inputEmail" type="email" class="formMargin" />
+
+          <div>地址:</div>
+          <input @input="inputinputAdress" type="text" class="formMargin" />
+          <div>留言 (有什麼想告訴我們的請備註在此)</div>
+          <textarea
+            @input="inputinputMessage"
+            cols="30"
+            rows="10"
+            class="formMargin"
+          ></textarea>
+          <div class="formButtonLayout">
+            <router-link to="/cart" class="goCart">上一步</router-link>
+            <router-link @mouseenter="pushPayFunction" to="/pay" class="goPay"
+              >付款去</router-link
+            >
+          </div>
+
+          <div v-show="sectionDebugRef">{{ payStore.pays }}</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
   <Footer />
 </template>
 
 <style scoped>
-.sectionDebug {
-  display: flex;
-  background-color: black;
-  color: green;
-  width: 100%;
-  height: 30vh;
-}
-
-.sectionDebug button {
-  background-color: green;
-}
-.sectionHolder {
-  height: 110px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
+.formPageLayout {
+  background-image: url('@/assets/pictures/shop03.webp');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .sectionBuyProcess {
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
+  width: 100%;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
 }
 
 .buyProcessLayout {
-  width: 60vw;
-  background-color: #daa520;
+  width: 60%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-.processDivOne {
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-  color: black;
-  background-color: #ddd;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.processDivTwo {
-  width: 200px;
-  height: 100px;
-  margin: 10px;
-
-  color: rgb(200, 200, 200);
-  background-color: rgb(0, 0, 0);
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+.processDivOne,
+.processDivTwo,
 .processDivThree {
   width: 200px;
   height: 100px;
-  margin: 10px;
-  color: black;
-  background-color: #ddd;
-  border-radius: 15px;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.processDivTwo {
+  background-color: #333;
+  color: #fff;
 }
 
 .sectionCart {
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
+  width: 100%;
   display: flex;
   justify-content: center;
+  padding: 20px 0;
 }
 
 .formLayout {
-  width: 500px;
-  background-color: #c4c4c4;
-  color: black;
-  display: flex;
-  justify-content: center;
-  border-radius: 15px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .formWidth {
-  width: 400px;
+  width: 100%;
 }
 
 .formMargin {
-  margin: 15px;
+  margin-bottom: 20px;
 }
 
-input {
+input,
+textarea {
   width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #f5a623;
 }
 
 textarea {
-  width: 100%;
+  resize: none;
 }
 
 .formButtonLayout {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+}
+
+a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f5a623;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: #e68a00;
 }
 
 .footerHolder {
   height: 100px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
+  width: 100%;
+  background-color: #f5a623;
 }
 
-a {
-  background-color: #daa520;
-  margin: 15px;
-  padding: 10px;
-}
-
-a:hover {
-  color: green;
-}
-
+/* 隱藏數字輸入的上下箭頭 */
 input[type='number'] {
+  -moz-appearance: textfield;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-input[type='number'] {
-  -moz-appearance: textfield;
 }
 </style>
