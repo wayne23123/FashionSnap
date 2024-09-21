@@ -208,7 +208,7 @@ function useKupengFunction() {
   height: 110px;
   width: 100vw;
   max-width: 100%;
-  background-color: #daa520;
+  background-color: #e6d8b6;
 }
 
 .sectionBuyProcess {
@@ -317,13 +317,31 @@ td {
   display: flex;
   justify-content: center;
 }
-.nputKupengButton {
-  background-color: #daa520;
+
+.inputKupeng {
+  padding: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.inputKupeng input {
   padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.nputKupengButton {
+  padding: 10px 20px;
+  background-color: #daa520;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .nputKupengButton:hover {
-  color: #777777;
+  background-color: #aa0000;
 }
 
 .sectionTotal {
@@ -396,6 +414,24 @@ a:hover {
 .totalPriceBottom {
   background-color: #daa520;
   width: 120px;
+}
+
+.removeButton,
+.addLeft,
+.addRight {
+  padding: 8px 12px;
+  background-color: #c29116;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.removeButton:hover,
+.addLeft:hover,
+.addRight:hover {
+  background-color: #aa0000;
 }
 
 .yellow {
