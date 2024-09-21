@@ -9,9 +9,9 @@ const demoStore = useDemoStore();
 // 控制 carousel 移動的位移距離
 const carouselStart = ref(0);
 const carouselStep = 210; // 每次移動的距離
-const totalItems = 15; // 商品的總數
+const totalItems = 20; // 商品的總數
 const visibleItems = 5; // 一次顯示幾個商品
-const totalWidth = carouselStep * totalItems; // 總寬度
+const totalWidth = carouselStep * totalItems - 420; // 總寬度
 const visibleWidth = carouselStep * visibleItems; // 可見區域的寬度
 let intervalId = null;
 

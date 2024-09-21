@@ -3,6 +3,7 @@ import HeroBanner from '../components/HeroBanner.vue';
 import Carousel from '../components/Carousel.vue';
 import Marquee from '../components/Marquee.vue';
 import FeaturedProducts from '../components/FeaturedProducts.vue';
+import CarouselShop from '../components/CarouselShop.vue';
 import Footer from '../components/Footer.vue';
 </script>
 
@@ -16,6 +17,8 @@ import Footer from '../components/Footer.vue';
 
     <!-- Hero Banner -->
     <HeroBanner />
+
+    <CarouselShop />
 
     <!-- 推薦商品區 Featured Products -->
     <FeaturedProducts />

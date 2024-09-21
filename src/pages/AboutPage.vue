@@ -27,245 +27,95 @@ function toTopFunction() {
 </script>
 
 <template>
-  <section class="sectionAboutUs">
-    <div class="textAboutUs"><h1>關於我們</h1></div>
-    <div class="imgAboutUsLayout">
-      <img class="imgAboutUs" src="../assets/pictures/carl-r.jpg" alt="" />
+  <div class="wrap">
+    <!-- item 1  -->
+    <div class="item">
+      <div class="pic">
+        <img src="../assets/pictures/carl-r.jpg" alt="" />
+      </div>
+      <div class="txt">
+        <h2>關於我們</h2>
+        <p>
+          我們是一家充滿活力和創意的網路商城，我們提供時尚的服飾、舒適的鞋子、時尚的帽子等多種產品。我們的目標是為客戶提供最好的購物體驗，讓他們感到舒適和自信。
+        </p>
+      </div>
     </div>
-  </section>
-  <section class="sectionHolder"></section>
-  <section class="sectionAbout">
-    <div class="aboutLayout">
-      <TransitionGroup name="listUp" tag="div" class="flex">
-        <div v-if="showAboutOneRef" class="textAboutLayout">
-          <p>
-            Wayne's Shopping Spot
-            是一家充滿活力和創意的網路商城，我們提供時尚的服飾、舒適的鞋子、時尚的帽子等多種產品。我們的目標是為客戶提供最好的購物體驗，讓他們感到舒適和自信。
-          </p>
-          <p>
-            我們相信每個人都有自己的風格和品味，我們的產品提供多種不同風格和款式，讓每個客戶都能找到最適合自己的產品。我們堅信，時尚應該是讓人們感到自在和自信的，這也是我們產品的核心價值。"
-          </p>
-        </div>
-        <div v-if="showAboutOneRef" class="imgAboutLayout">
-          <img class="imgAbout" src="../assets/pictures/openAlert.jpg" alt="" />
-        </div>
-      </TransitionGroup>
-      <br />
-
-      <TransitionGroup name="listUp" tag="div" class="flex">
-        <div v-if="showAboutTwoRef" class="imgAboutLayout">
-          <img
-            class="imgAbout"
-            src="../assets/pictures/clark-street-q.jpg"
-            alt=""
-          />
-        </div>
-        <div v-if="showAboutTwoRef" class="textAboutLayout">
-          <p>
-            我們的產品設計風格多樣化，從經典風格到潮流時尚，滿足客戶不同的需求。我們的產品質量優良，我們也提供快速而可靠的配送服務，讓您購物更加方便、快捷。
-          </p>
-          <p>
-            我們將購物視為一種探索和發現的過程，我們的產品設計充滿驚喜和美感，帶給客戶不斷的驚喜和樂趣。我們不斷進行研究和改進，以滿足客戶不斷變化的需求。
-          </p>
-        </div>
-      </TransitionGroup>
+    <!-- item 2  -->
+    <div class="item">
+      <div class="txt">
+        <h2>Fasion Snap</h2>
+        <p>
+          我們相信每個人都有自己的風格和品味，我們的產品提供多種不同風格和款式，讓每個客戶都能找到最適合自己的產品。我們堅信，時尚應該是讓人們感到自在和自信的，這也是我們產品的核心價值。
+        </p>
+      </div>
+      <div class="pic">
+        <img src="../assets/pictures/openAlert.jpg" alt="" />
+      </div>
     </div>
-  </section>
-  <transition name="fade" tag="div" v-show="showAboutOneRef">
-    <button @mouseenter="toTopFunction" class="toTop">
-      <div class="toTopButton">▲ TOP</div>
-    </button>
-  </transition>
-  <section class="footerHolder"></section>
+    <!-- item 3  -->
+    <div class="item">
+      <div class="pic">
+        <img src="../assets/pictures/clark-street-q.jpg" />
+      </div>
+      <div class="txt">
+        <h2>產品設計</h2>
+        <p>
+          我們的產品設計風格多樣化，從經典風格到潮流時尚，滿足客戶不同的需求。我們的產品質量優良，我們也提供快速而可靠的配送服務，讓您購物更加方便、快捷。
+        </p>
+      </div>
+    </div>
+  </div>
   <Footer />
 </template>
 
 <style scoped>
-h1 {
-  color: #daa520;
-  background-color: #00000056;
+.wrap {
+  width: 1200px;
+  margin: auto;
 }
-
-p {
-  font-size: 20px;
-  text-indent: 2.5rem;
-}
-.flex {
+.item {
   display: flex;
-  flex-wrap: wrap;
-}
-.sectionHolder {
-  height: 75px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #916800;
-}
-
-.sectionAboutUs {
-  height: 200px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #daa520;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  margin-bottom: 70px;
+  font-family: 'Noto Sans TC', sans-serif;
 }
-
-.imgAboutUsLayout {
-  width: 100vw;
-  max-width: 100%;
-  height: 200px;
+.item h2 {
+  font-weight: 900;
+  margin-bottom: 1em;
 }
-
-.imgAboutUs {
+.item p {
+  font-weight: 300;
+  line-height: 1.6;
+}
+.item .pic {
+  width: 55%;
+  flex-shrink: 0;
+}
+.item .pic img {
   width: 100%;
-  object-position: 0 0;
+  vertical-align: middle;
 }
-
-.textAboutUs {
-  position: absolute;
-  z-index: 10;
+.item .txt {
+  width: 55%;
+  flex-shrink: 0;
+  padding: 50px 30px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
-
-.sectionAbout {
-  width: 100vw;
-  max-width: 100%;
-  background-color: #916800;
-  display: flex;
-  justify-content: center;
-  min-height: 740px;
+.item > :first-child {
+  margin-right: -10%;
 }
-
-.textAboutLayout {
-  width: 450px;
-
-  color: black;
-  padding: 0 50px 0 50px;
+.item:nth-child(1) .txt {
+  background-color: rgba(234, 235, 253, 0.8);
 }
-
-.imgAboutLayout {
-  width: 450px;
+.item:nth-child(2) .txt {
+  background-color: rgba(180, 240, 227, 0.8);
 }
-
-img {
-  width: 100%;
+.item:nth-child(3) .txt {
+  background-color: rgba(245, 224, 194, 0.8);
 }
-
-.footerHolder {
-  height: 100px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #916800;
-}
-
-.toTop {
-  top: 550px;
-  right: 22px;
-  position: fixed;
-  z-index: 200;
-  background-color: #6f0202;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-}
-
-.toTopButton {
-  color: white;
-  pointer-events: none;
-}
-
-/* up--------------------------------------------------------------------------- */
-.listUp-enter-active,
-.listUp-leave-active {
-  transition: all 3s ease;
-}
-
-.listUp-enter-from {
-  transform: translateY(100%);
-  opacity: 0;
-}
-.listUp-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-
-/* 控制TransitionGroup------------------------------------------------------------------------------------------------------- */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 1.5s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
-
-@media screen and (max-width: 920px) {
-  .flex {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .sectionHolder {
-    height: 75px;
-    width: 100vw;
-    max-width: 100%;
-    background-color: #141414;
-  }
-
-  .sectionAboutUs {
-    height: 200px;
-    width: 100vw;
-    max-width: 100%;
-    background-color: #daa520;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .imgAboutUsLayout {
-    width: 100vw;
-    max-width: 100%;
-    height: 200px;
-  }
-
-  .imgAboutUs {
-    width: 100%;
-    object-position: 0 0;
-  }
-
-  .textAboutUs {
-    position: absolute;
-    z-index: 10;
-  }
-
-  .sectionAbout {
-    width: 100vw;
-    max-width: 100%;
-    background-color: #916800;
-    display: flex;
-    justify-content: center;
-    min-height: 740px;
-  }
-
-  .textAboutLayout {
-    width: 96.7vw;
-    max-width: 100%;
-    color: black;
-    padding: 0 50px 0 50px;
-  }
-
-  .imgAboutLayout {
-    width: 96vw;
-    max-width: 100%;
-  }
-
-  img {
-    width: 100%;
-  }
+.item:nth-child(4) .txt {
+  background-color: rgba(149, 219, 214, 0.8);
 }
 </style>
