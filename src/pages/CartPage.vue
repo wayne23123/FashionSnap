@@ -196,13 +196,7 @@ function useKupengFunction() {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-}
-
-.sectionHolder {
-  height: 110px;
-  width: 100vw;
-  max-width: 100%;
-  background-color: #e6d8b6;
+  min-height: 80vh;
 }
 
 .sectionBuyProcess {
@@ -422,8 +416,6 @@ a:hover {
   text-decoration: line-through;
 }
 
-/* test---------------------------------------------------------------------------------------------------- */
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.75s;
@@ -438,5 +430,4 @@ a:hover {
 .fade-leave-from {
   opacity: 1;
 }
-/* test---------------------------------------------------------------------------------------------------- */
 </style>

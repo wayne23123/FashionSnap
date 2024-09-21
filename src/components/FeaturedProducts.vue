@@ -73,7 +73,8 @@ function addToCart(product) {
 
 <template>
   <section class="featured-products">
-    <h2>Today's Featured Products</h2>
+    <h2>今日好物推薦</h2>
+    <br />
     <div class="products-grid">
       <div
         class="product-card"

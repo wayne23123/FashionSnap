@@ -14,17 +14,6 @@ const productionStore = useProductionStore();
 const demoStore = useDemoStore();
 const cartStore = useCartStore();
 
-// 控制輪播圖顯示
-const carouselShopShowRef = ref(false);
-window.addEventListener('scroll', () => {
-  carouselShopShowRef.value = window.scrollY > 290;
-});
-
-// 返回頂部
-function toTopFunction() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
 // 用於商品的複製
 const copyRef = ref({});
 function copyCard(event, product) {
@@ -181,17 +170,6 @@ function toggleFilter() {
         </div>
       </div>
     </div>
-
-    <!-- 返回頂部按鈕 -->
-    <transition name="fade">
-      <button
-        v-show="carouselShopShowRef"
-        @click="toTopFunction"
-        class="to-top-btn"
-      >
-        ▲
-      </button>
-    </transition>
   </section>
   <!-- 頁面底部 -->
   <Footer />
@@ -334,21 +312,6 @@ label:hover {
 }
 
 .add-to-cart-btn:hover {
-  background-color: #ff543a;
-}
-
-.to-top-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #ff6f61;
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.to-top-btn:hover {
   background-color: #ff543a;
 }
 
