@@ -1,6 +1,18 @@
 import { createApp } from 'vue';
-import './styles/style.css';
+import { createPinia } from 'pinia';
+
 import App from './App.vue';
 import router from './router';
 
-createApp(App).use(router).mount('#app');
+import './assets/main.css';
+
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0);
+});
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');

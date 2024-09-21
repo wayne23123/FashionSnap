@@ -1,9 +1,17 @@
-<script setup></script>
+<script setup>
+import '../src/assets/main.css';
+import NavBar from './components/NavBar.vue';
+</script>
 
 <template>
-  <div>
-    <router-view />
-  </div>
+  <header>
+    <NavBar />
+  </header>
+  <router-view></router-view>
 </template>
 
-<style scoped></style>
+<style>
+html {
+  background-color: #c4c4c4;
+}
+</style>
