@@ -335,12 +335,15 @@ label:hover {
 
 .size-select,
 .quantity-select {
+  width: 100%;
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ddd;
+  margin-right: 5px;
 }
 
 .add-to-cart-btn {
+  width: 400px;
   background-color: #ff6f61;
   color: #fff;
   padding: 8px 12px;
@@ -394,7 +397,7 @@ label:hover {
     display: block;
     position: fixed;
     left: 10px;
-    top: 100px;
+    top: 140px;
     background-color: #ff6f61;
     color: white;
     border: none;
