@@ -44,10 +44,18 @@ function toggleFilter() {
   isFilterOpen.value = !isFilterOpen.value;
 }
 
+const searchAndClose = () => {
+  isFilterOpen.value = false;
+};
+
+const clearSearch = () => {
+  productionStore.searchTerm = '';
+};
+
 // 當組件掛載時，清空 productionStore.searchTerm
 onMounted(() => {
   // 清空之前的搜尋關鍵字
-  productionStore.searchTerm = '';
+  clearSearch();
 });
 </script>
 
@@ -64,77 +72,91 @@ onMounted(() => {
 
     <!-- 搜尋與分類篩選 -->
     <aside :class="['filter-section', { open: isFilterOpen }]">
-      <input
-        id="search-field"
-        v-model="productionStore.searchTerm"
-        placeholder="搜尋商品..."
-        class="search-bar"
-      />
+      <form @submit.prevent="searchAndClose">
+        <div class="input-wrapper">
+          <input
+            id="search-field"
+            v-model="productionStore.searchTerm"
+            placeholder="搜尋商品..."
+            class="search-bar"
+          />
+          <!-- 顯示 X 按鈕，當 searchTerm 有內容時顯示 -->
+          <span
+            v-if="productionStore.searchTerm"
+            class="clear-btn"
+            @click="clearSearch"
+            >×</span
+          >
+        </div>
+        <button type="submit" class="search-button">搜尋</button>
 
-      <div class="category-filter">
-        <label for="all" :class="{ active: productionStore.searchTerm === '' }"
-          >全部商品</label
-        >
-        <input
-          id="all"
-          type="radio"
-          value=""
-          v-model="productionStore.searchTerm"
-          class="hidden-input"
-        />
+        <div class="category-filter">
+          <label
+            for="all"
+            :class="{ active: productionStore.searchTerm === '' }"
+            >全部商品</label
+          >
+          <input
+            id="all"
+            type="radio"
+            value=""
+            v-model="productionStore.searchTerm"
+            class="hidden-input"
+          />
 
-        <label
-          for="hat"
-          :class="{ active: productionStore.searchTerm === 'hat' }"
-          >帽子分類</label
-        >
-        <input
-          id="hat"
-          type="radio"
-          value="hat"
-          v-model="productionStore.searchTerm"
-          class="hidden-input"
-        />
+          <label
+            for="hat"
+            :class="{ active: productionStore.searchTerm === 'hat' }"
+            >帽子分類</label
+          >
+          <input
+            id="hat"
+            type="radio"
+            value="hat"
+            v-model="productionStore.searchTerm"
+            class="hidden-input"
+          />
 
-        <label
-          for="shoes"
-          :class="{ active: productionStore.searchTerm === 'shoes' }"
-          >鞋子分類</label
-        >
-        <input
-          id="shoes"
-          type="radio"
-          value="shoes"
-          v-model="productionStore.searchTerm"
-          class="hidden-input"
-        />
+          <label
+            for="shoes"
+            :class="{ active: productionStore.searchTerm === 'shoes' }"
+            >鞋子分類</label
+          >
+          <input
+            id="shoes"
+            type="radio"
+            value="shoes"
+            v-model="productionStore.searchTerm"
+            class="hidden-input"
+          />
 
-        <label
-          for="clothes"
-          :class="{ active: productionStore.searchTerm === 'clothes' }"
-          >衣服分類</label
-        >
-        <input
-          id="clothes"
-          type="radio"
-          value="clothes"
-          v-model="productionStore.searchTerm"
-          class="hidden-input"
-        />
+          <label
+            for="clothes"
+            :class="{ active: productionStore.searchTerm === 'clothes' }"
+            >衣服分類</label
+          >
+          <input
+            id="clothes"
+            type="radio"
+            value="clothes"
+            v-model="productionStore.searchTerm"
+            class="hidden-input"
+          />
 
-        <label
-          for="pants"
-          :class="{ active: productionStore.searchTerm === 'pants' }"
-          >褲子分類</label
-        >
-        <input
-          id="pants"
-          type="radio"
-          value="pants"
-          v-model="productionStore.searchTerm"
-          class="hidden-input"
-        />
-      </div>
+          <label
+            for="pants"
+            :class="{ active: productionStore.searchTerm === 'pants' }"
+            >褲子分類</label
+          >
+          <input
+            id="pants"
+            type="radio"
+            value="pants"
+            v-model="productionStore.searchTerm"
+            class="hidden-input"
+          />
+        </div>
+      </form>
     </aside>
 
     <!-- 主要內容區 -->
@@ -257,6 +279,21 @@ onMounted(() => {
   border-radius: 5px;
   border: 1px solid #ddd;
   margin-bottom: 15px;
+}
+
+.input-wrapper {
+  position: relative;
+  flex-grow: 1;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 36%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.3s ease;
 }
 
 .category-filter {
