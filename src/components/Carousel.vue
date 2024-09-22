@@ -44,12 +44,18 @@ function prevSlide() {
 
 // 開始自動播放
 function startAutoPlay() {
-  autoPlayInterval.value = setInterval(nextSlide, autoPlayTime);
+  // 只有當 autoPlayInterval 為 null 時，才會創建新的 setInterval
+  if (!autoPlayInterval.value) {
+    autoPlayInterval.value = setInterval(nextSlide, autoPlayTime);
+  }
 }
 
 // 停止自動播放
 function stopAutoPlay() {
-  clearInterval(autoPlayInterval.value);
+  if (autoPlayInterval.value) {
+    clearInterval(autoPlayInterval.value);
+    autoPlayInterval.value = null; // 確保可以正確重啟
+  }
 }
 
 const leaveHandler = () => {
