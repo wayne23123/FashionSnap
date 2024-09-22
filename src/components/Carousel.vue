@@ -1,51 +1,94 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+
 import shop02 from '../assets/pictures/shop02.webp';
 import carlR from '../assets/pictures/carl-r.jpg';
 import hannahM from '../assets/pictures/hannah-m.jpg';
 
+// 輪播項目數據
 const items = ref([{ image: shop02 }, { image: carlR }, { image: hannahM }]);
 
-const currentIndex = ref(0);
-const autoPlayInterval = ref(null);
+const currentIndex = ref(1); // 開始時顯示真正的第一張
+const isDragging = ref(false); // 是否正在拖曳
+const startX = ref(0); // 滑鼠按下的起始位置
+const translateX = ref(0); // 滑鼠拖動的位移
+const autoPlayInterval = ref(null); // 自動播放的 interval
+const transitionStyle = ref('transform 0.5s ease'); // 控制動畫
 
-// 自動播放的時間間隔（3 秒）
-const autoPlayTime = 3000;
+const autoPlayTime = 3000; // 自動播放時間間隔
 
 // 下一張圖片
 function nextSlide() {
-  currentIndex.value = (currentIndex.value + 1) % items.value.length;
+  currentIndex.value++;
+  if (currentIndex.value === items.value.length + 1) {
+    // 如果到達克隆的第一張圖片，快速跳轉到真正的第一張
+    setTimeout(() => {
+      transitionStyle.value = 'none'; // 禁用過渡效果
+      currentIndex.value = 1;
+    }, 500); // 延遲的時間與過渡時間一致
+  } else {
+    transitionStyle.value = 'transform 0.5s ease';
+  }
 }
 
 // 上一張圖片
 function prevSlide() {
-  currentIndex.value =
-    (currentIndex.value - 1 + items.value.length) % items.value.length;
+  currentIndex.value--;
+  if (currentIndex.value === 0) {
+    // 如果到達克隆的最後一張圖片，快速跳轉到真正的最後一張
+    setTimeout(() => {
+      transitionStyle.value = 'none'; // 禁用過渡效果
+      currentIndex.value = items.value.length;
+    }, 500);
+  } else {
+    transitionStyle.value = 'transform 0.5s ease';
+  }
 }
 
-// 自動播放功能
+// 開始自動播放
 function startAutoPlay() {
   autoPlayInterval.value = setInterval(nextSlide, autoPlayTime);
 }
 
 // 停止自動播放
 function stopAutoPlay() {
-  if (autoPlayInterval.value) {
-    clearInterval(autoPlayInterval.value);
-    autoPlayInterval.value = null;
-  }
+  clearInterval(autoPlayInterval.value);
 }
 
-// 開始或停止自動播放
-function toggleCarousel(action) {
-  if (action === 'stop') {
-    stopAutoPlay();
-  } else {
-    startAutoPlay();
-  }
+// 滑鼠按下事件
+function handleMouseDown(event) {
+  isDragging.value = true;
+  startX.value = event.clientX;
+  stopAutoPlay(); // 拖動時暫停自動播放
 }
 
-// 在組件掛載時啟動自動播放，組件卸載時停止
+// 滑鼠移動事件
+function handleMouseMove(event) {
+  if (!isDragging.value) return;
+
+  const currentX = event.clientX;
+  translateX.value = currentX - startX.value;
+}
+
+// 滑鼠釋放事件
+function handleMouseUp() {
+  if (!isDragging.value) return;
+
+  const threshold = 50; // 設置滑動切換的閾值
+  if (translateX.value > threshold) {
+    prevSlide(); // 如果拖曳距離超過閾值，則滑動到上一張
+  } else if (translateX.value < -threshold) {
+    nextSlide(); // 如果拖曳距離超過閾值，則滑動到下一張
+  }
+
+  // 重置拖曳狀態
+  isDragging.value = false;
+  translateX.value = 0;
+
+  startAutoPlay(); // 釋放後重新啟動自動播放
+}
+
+// 組件掛載後啟動自動播放，卸載時停止
 onMounted(() => {
   startAutoPlay();
 });
@@ -56,38 +99,37 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="carousel-container">
+  <div
+    class="carousel-container"
+    @mousedown="handleMouseDown"
+    @mousemove="handleMouseMove"
+    @mouseup="handleMouseUp"
+    @mouseleave="handleMouseUp"
+  >
     <div
       class="carousel-track"
-      :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
+      :style="{
+        transform: `translateX(calc(-${
+          currentIndex * 100
+        }% + ${translateX}px))`,
+        transition: transitionStyle,
+      }"
     >
-      <div
-        class="carousel-item"
-        v-for="(item, index) in items"
-        :key="index"
-        @mouseenter="toggleCarousel('stop')"
-        @mouseleave="toggleCarousel('start')"
-      >
+      <!-- 克隆最後一張圖片，放在第一個位置 -->
+      <div class="carousel-item">
+        <img :src="items[items.length - 1].image" alt="carousel image" />
+      </div>
+
+      <!-- 真正的輪播項目 -->
+      <div class="carousel-item" v-for="(item, index) in items" :key="index">
         <img :src="item.image" alt="carousel image" />
       </div>
-    </div>
 
-    <button
-      class="prev"
-      @click="prevSlide"
-      @mouseenter="toggleCarousel('stop')"
-      @mouseleave="toggleCarousel('start')"
-    >
-      ‹
-    </button>
-    <button
-      class="next"
-      @click="nextSlide"
-      @mouseenter="toggleCarousel('stop')"
-      @mouseleave="toggleCarousel('start')"
-    >
-      ›
-    </button>
+      <!-- 克隆第一張圖片，放在最後一個位置 -->
+      <div class="carousel-item">
+        <img :src="items[0].image" alt="carousel image" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -95,45 +137,37 @@ onUnmounted(() => {
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 800px;
   overflow: hidden;
-  perspective: 1000px; /* 3D 透視效果 */
+  cursor: grab;
+  height: 650px;
 }
 
 .carousel-track {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.5s ease; /* 默認過渡效果 */
 }
 
 .carousel-item {
   min-width: 100%;
-  transition: transform 0.5s ease-in-out;
 }
 
-.carousel-item img {
+img {
   width: 100%;
   height: auto;
-  object-fit: cover;
-  transform: scale(1);
-  transition: transform 0.5s ease-in-out;
-}
-
-/* 當滑鼠懸停時，圖片縮放效果 */
-.carousel-item:hover img {
-  transform: scale(1.05); /* 放大圖片 */
+  user-select: none; /* 禁止選中圖片 */
+  user-drag: none; /* 禁止拖曳圖片 */
+  pointer-events: none; /* 禁止圖片接收滑鼠事件 */
 }
 
 button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
   border: none;
-  font-size: 2rem;
-  color: #fff;
   cursor: pointer;
-  padding: 10px;
-  z-index: 1;
+  font-size: 2rem;
 }
 
 .prev {
@@ -144,56 +178,21 @@ button {
   right: 10px;
 }
 
-button:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-/* 響應式設計 */
-@media (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 992px) {
   .carousel-container {
-    height: 700px;
+    height: 500px;
   }
 }
 
-@media (max-width: 1050px) {
+@media (min-width: 576px) and (max-width: 768px) {
   .carousel-container {
-    height: 550px;
+    height: 380px;
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 576px) {
   .carousel-container {
-    height: 450px;
-  }
-}
-
-@media (max-width: 768px) {
-  .carousel-container {
-    height: 350px;
-  }
-
-  button {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 550px) {
-  .carousel-container {
-    height: 250px;
-  }
-
-  button {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 425px) {
-  .carousel-container {
-    height: 200px;
-  }
-
-  button {
-    font-size: 1.2rem;
+    height: 240px;
   }
 }
 </style>
