@@ -1,11 +1,12 @@
 <script setup>
 import { ref, reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Marquee from '../components/Marquee.vue';
 import { useCartStore } from '../stores/cart';
 import { useSteponeStore } from '../stores/stepone';
 
-const sectionDebugRef = ref(false);
+const router = useRouter(); // 使用 vue-router 的編程導航
 
 const cartStore = useCartStore();
 const steponeStore = useSteponeStore();
@@ -14,6 +15,16 @@ const steponeStore = useSteponeStore();
 const emptyCopyCartsRef = ref({});
 
 // 當滑鼠移入 前去結帳 時會觸發保存當下的 carts 到 emptyCopyCartsRef 並清空 stepones 後推進去
+
+function navigate() {
+  // 根據 cartsHasProductionFunction() 來決定導航
+  if (cartStore.cartsHasProductionFunction()) {
+    router.push('/form'); // 前去結帳
+  } else {
+    router.push('/shop'); // 到商城看新商品
+  }
+}
+
 function copyStepOne() {
   // 保存當下的 carts 狀態
   emptyCopyCartsRef.value = cartStore.carts;
@@ -21,6 +32,8 @@ function copyStepOne() {
   steponeStore.stepones = [];
   // 將 carts 狀態加入 stepones
   steponeStore.stepones.push(...emptyCopyCartsRef.value);
+
+  navigate();
 }
 
 // 計算所有商品數量
@@ -62,8 +75,6 @@ function useKupengFunction() {
 </script>
 
 <template>
-  <Marquee />
-
   <!-- 麵包屑導航 -->
   <nav class="breadcrumb-nav">
     <router-link to="/">首頁</router-link>
@@ -72,6 +83,9 @@ function useKupengFunction() {
     <span>/</span>
     <router-link to="/cart">購物車</router-link>
   </nav>
+
+  <Marquee />
+
   <div class="cartPageLayout">
     <section class="sectionBuyProcess">
       <div class="buyProcessLayout">
@@ -113,14 +127,14 @@ function useKupengFunction() {
                   @click="cartStore.decreaseCartItemById(cart.id, cart.size)"
                   class="addLeft"
                 >
-                  -1
+                  -
                 </button>
                 {{ cart.counter }} 件
                 <button
                   @click="cartStore.increaseCartItemById(cart.id, cart.size)"
                   class="addRight"
                 >
-                  +1
+                  +
                 </button>
               </td>
               <td v-if="useKupengRef">
@@ -179,20 +193,18 @@ function useKupengFunction() {
 
         <!-- 右側區塊: 結帳或去商城按鈕 -->
         <div class="checkoutButtonContainer">
-          <router-link
-            v-if="cartStore.cartsHasProductionFunction()"
-            to="/form"
-            class="checkoutButton"
-          >
-            前去結帳
-          </router-link>
-          <router-link v-else to="/shop" class="checkoutButton">
-            到商城看新商品
-          </router-link>
+          <button @click="copyStepOne" class="checkoutButton">
+            {{
+              cartStore.cartsHasProductionFunction()
+                ? '前去結帳'
+                : '到商城看新商品'
+            }}
+          </button>
         </div>
       </div>
     </section>
   </div>
+
   <Footer />
 </template>
 

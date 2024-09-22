@@ -5,8 +5,6 @@ import { usePayStore } from '../stores/pay';
 import { useAdminCartStore } from '../stores/admincart';
 import { useCartStore } from '../stores/cart';
 
-const sectionDebugRef = ref(false);
-
 const cartStore = useCartStore();
 const payStore = usePayStore();
 const adminCartStore = useAdminCartStore();
@@ -74,9 +72,7 @@ function pushAdminCart() {
         <div class="processDivThree">step3.付款去</div>
       </div>
     </section>
-    <section v-show="sectionDebugRef" class="sectionDebug">
-      <div>pays的狀態{{ payStore.pays }}</div>
-    </section>
+
     <section class="sectionPay">
       <div class="payLayout">
         <div class="payCard">

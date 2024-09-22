@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import { useSteponeStore } from '../stores/stepone';
 import { usePayStore } from '../stores/pay';
 
+const router = useRouter();
 const steponeStore = useSteponeStore();
 const payStore = usePayStore();
 
@@ -120,12 +122,15 @@ function pushPayFunction() {
     alert('請輸入地址');
     return;
   }
+
   // 設定時間陣列
   setArrayTime();
   // 清空 pays 數組
   payStore.pays.splice(0);
   // 將 stepones 陣列的所有元素推送到 pays 數組中
   payStore.pays.push(...steponeStore.stepones);
+
+  router.push('/pay');
 }
 </script>
 
@@ -147,9 +152,6 @@ function pushPayFunction() {
         <div class="processDivTwo">step2.填寫購買資料</div>
         <div class="processDivThree">step3.付款去</div>
       </div>
-    </section>
-    <section v-show="sectionDebugRef" class="sectionDebug">
-      <div>{{ steponeStore.stepones }}</div>
     </section>
     <section class="sectionCart">
       <div class="formLayout">
@@ -176,9 +178,7 @@ function pushPayFunction() {
           ></textarea>
           <div class="formButtonLayout">
             <router-link to="/cart" class="goCart">上一步</router-link>
-            <router-link @mouseenter="pushPayFunction" to="/pay" class="goPay"
-              >付款去</router-link
-            >
+            <button @click="pushPayFunction" class="goPay">付款去</button>
           </div>
         </div>
       </div>
