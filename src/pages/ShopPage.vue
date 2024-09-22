@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+// import { ref } from 'vue';
 import Marquee from '../components/Marquee.vue';
 import Footer from '../components/Footer.vue';
 import CarouselShop from '../components/CarouselShop.vue';
@@ -42,6 +43,12 @@ const isFilterOpen = ref(false);
 function toggleFilter() {
   isFilterOpen.value = !isFilterOpen.value;
 }
+
+// 當組件掛載時，清空 productionStore.searchTerm
+onMounted(() => {
+  // 清空之前的搜尋關鍵字
+  productionStore.searchTerm = '';
+});
 </script>
 
 <template>
@@ -135,7 +142,10 @@ function toggleFilter() {
       <CarouselShop />
 
       <!-- 商品展示區 -->
-      <div class="product-grid">
+      <div
+        v-if="productionStore.searchedProductionTitle.length > 0"
+        class="product-grid"
+      >
         <div
           v-for="product in productionStore.searchedProductionTitle"
           :key="product.id"
@@ -168,6 +178,10 @@ function toggleFilter() {
             </button>
           </div>
         </div>
+      </div>
+      <!-- 如果沒有搜尋結果，顯示提示訊息 -->
+      <div v-else class="no-results-message">
+        <p>抱歉，沒有找到符合搜尋條件的商品。</p>
       </div>
     </div>
   </section>
@@ -219,8 +233,7 @@ function toggleFilter() {
   padding: 20px;
   max-width: 1440px;
   margin: 0 auto;
-  min-height: 100vh; /* 保證父容器有足夠高度進行滾動 */
-  overflow: visible; /* 確保父容器不會隱藏溢出的內容 */
+  overflow: visible;
 }
 
 .filter-toggle-btn {
@@ -349,6 +362,13 @@ label:hover {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.no-results-message {
+  text-align: center;
+  padding: 200px 0;
+  font-size: 1.5rem;
+  color: #666;
 }
 
 .add-to-cart-btn:hover {

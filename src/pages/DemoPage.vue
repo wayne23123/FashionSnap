@@ -70,8 +70,8 @@ function addcopyDemoFunction() {
       </div>
 
       <div class="rightInfo">
-        <div class="demoTitle">商品名稱: {{ product.title }}</div>
-        <div class="demoPrice">商品價格: {{ product.price }}</div>
+        <div class="demoTitle">{{ product.title }}</div>
+        <div class="demoPrice">NT$ {{ product.price }}</div>
         <div class="demoStar">
           社群評價:
           <span class="demoYellowStar">{{ product.star }}</span>

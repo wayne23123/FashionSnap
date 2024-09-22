@@ -126,6 +126,7 @@ function toTopFunction() {
   display: flex;
   align-items: center;
   font-family: 'Noto Sans TC', sans-serif;
+  padding-bottom: 30px;
 }
 .item h2 {
   font-weight: 900;

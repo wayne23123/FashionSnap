@@ -5,27 +5,25 @@ import shop02 from '../assets/pictures/shop02.webp';
 import carlR from '../assets/pictures/carl-r.jpg';
 import hannahM from '../assets/pictures/hannah-m.jpg';
 
-// 輪播項目數據
 const items = ref([{ image: shop02 }, { image: carlR }, { image: hannahM }]);
 
-const currentIndex = ref(1); // 開始時顯示真正的第一張
-const isDragging = ref(false); // 是否正在拖曳
-const startX = ref(0); // 滑鼠按下的起始位置
-const translateX = ref(0); // 滑鼠拖動的位移
-const autoPlayInterval = ref(null); // 自動播放的 interval
-const transitionStyle = ref('transform 0.5s ease'); // 控制動畫
+const currentIndex = ref(1);
+const isDragging = ref(false);
+const startX = ref(0);
+const translateX = ref(0);
+const autoPlayInterval = ref(null);
+const transitionStyle = ref('transform 0.5s ease');
 
-const autoPlayTime = 3000; // 自動播放時間間隔
+const autoPlayTime = 3000;
 
 // 下一張圖片
 function nextSlide() {
   currentIndex.value++;
   if (currentIndex.value === items.value.length + 1) {
-    // 如果到達克隆的第一張圖片，快速跳轉到真正的第一張
     setTimeout(() => {
-      transitionStyle.value = 'none'; // 禁用過渡效果
+      transitionStyle.value = 'none';
       currentIndex.value = 1;
-    }, 500); // 延遲的時間與過渡時間一致
+    }, 500);
   } else {
     transitionStyle.value = 'transform 0.5s ease';
   }
@@ -35,9 +33,8 @@ function nextSlide() {
 function prevSlide() {
   currentIndex.value--;
   if (currentIndex.value === 0) {
-    // 如果到達克隆的最後一張圖片，快速跳轉到真正的最後一張
     setTimeout(() => {
-      transitionStyle.value = 'none'; // 禁用過渡效果
+      transitionStyle.value = 'none';
       currentIndex.value = items.value.length;
     }, 500);
   } else {
@@ -55,40 +52,44 @@ function stopAutoPlay() {
   clearInterval(autoPlayInterval.value);
 }
 
-// 滑鼠按下事件
-function handleMouseDown(event) {
+const leaveHandler = () => {
+  stopAutoPlay();
+  handleEnd();
+};
+
+// 滑鼠/觸控按下事件
+function handleStart(event) {
   isDragging.value = true;
-  startX.value = event.clientX;
-  stopAutoPlay(); // 拖動時暫停自動播放
+  startX.value =
+    event.type === 'touchstart' ? event.touches[0].clientX : event.clientX;
+  stopAutoPlay();
 }
 
-// 滑鼠移動事件
-function handleMouseMove(event) {
+// 滑鼠/觸控移動事件
+function handleMove(event) {
   if (!isDragging.value) return;
 
-  const currentX = event.clientX;
+  const currentX =
+    event.type === 'touchmove' ? event.touches[0].clientX : event.clientX;
   translateX.value = currentX - startX.value;
 }
 
-// 滑鼠釋放事件
-function handleMouseUp() {
+// 滑鼠/觸控釋放事件
+function handleEnd() {
   if (!isDragging.value) return;
 
-  const threshold = 50; // 設置滑動切換的閾值
+  const threshold = 50;
   if (translateX.value > threshold) {
-    prevSlide(); // 如果拖曳距離超過閾值，則滑動到上一張
+    prevSlide();
   } else if (translateX.value < -threshold) {
-    nextSlide(); // 如果拖曳距離超過閾值，則滑動到下一張
+    nextSlide();
   }
 
-  // 重置拖曳狀態
   isDragging.value = false;
   translateX.value = 0;
-
-  startAutoPlay(); // 釋放後重新啟動自動播放
+  startAutoPlay();
 }
 
-// 組件掛載後啟動自動播放，卸載時停止
 onMounted(() => {
   startAutoPlay();
 });
@@ -101,10 +102,14 @@ onUnmounted(() => {
 <template>
   <div
     class="carousel-container"
-    @mousedown="handleMouseDown"
-    @mousemove="handleMouseMove"
-    @mouseup="handleMouseUp"
-    @mouseleave="handleMouseUp"
+    @mousedown="handleStart"
+    @mousemove="handleMove"
+    @mouseup="handleEnd"
+    @mouseleave="leaveHandler"
+    @touchstart="handleStart"
+    @touchmove="handleMove"
+    @touchend="handleEnd"
+    @mouseenter="stopAutoPlay"
   >
     <div
       class="carousel-track"
