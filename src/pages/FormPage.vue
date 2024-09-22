@@ -4,8 +4,6 @@ import Footer from '../components/Footer.vue';
 import { useSteponeStore } from '../stores/stepone';
 import { usePayStore } from '../stores/pay';
 
-const sectionDebugRef = ref(false);
-
 const steponeStore = useSteponeStore();
 const payStore = usePayStore();
 
@@ -132,6 +130,16 @@ function pushPayFunction() {
 </script>
 
 <template>
+  <!-- 麵包屑導航 -->
+  <nav class="breadcrumb-nav">
+    <router-link to="/">首頁</router-link>
+    <span>/</span>
+    <router-link to="/shop">商店</router-link>
+    <span>/</span>
+    <router-link to="/cart">購物車</router-link>
+    <span>/</span>
+    <router-link to="/form">填寫購買資料</router-link>
+  </nav>
   <div class="formPageLayout">
     <section class="sectionBuyProcess">
       <div class="buyProcessLayout">
@@ -172,8 +180,6 @@ function pushPayFunction() {
               >付款去</router-link
             >
           </div>
-
-          <div v-show="sectionDebugRef">{{ payStore.pays }}</div>
         </div>
       </div>
     </section>
@@ -183,6 +189,43 @@ function pushPayFunction() {
 </template>
 
 <style scoped>
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #666;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.breadcrumb-nav a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.breadcrumb-nav a:hover {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.breadcrumb-nav span {
+  margin: 0 5px;
+  color: #999;
+}
+
+.breadcrumb-nav a:last-of-type {
+  background-color: transparent;
+  font-weight: bold;
+  color: #ff6f61;
+  background-color: #eaeaea;
+}
+
 .formPageLayout {
   background-image: url('@/assets/pictures/shop03.webp');
   background-size: cover;
@@ -277,7 +320,8 @@ textarea {
   margin-top: 20px;
 }
 
-a {
+.goPay,
+.goCart {
   display: inline-block;
   padding: 10px 20px;
   background-color: #f5a623;
@@ -288,7 +332,8 @@ a {
   transition: background-color 0.3s ease;
 }
 
-a:hover {
+.goPay:hover,
+.goCart:hover {
   background-color: #e68a00;
 }
 

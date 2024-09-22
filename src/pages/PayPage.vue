@@ -54,6 +54,18 @@ function pushAdminCart() {
 </script>
 
 <template>
+  <!-- 麵包屑導航 -->
+  <nav class="breadcrumb-nav">
+    <router-link to="/">首頁</router-link>
+    <span>/</span>
+    <router-link to="/shop">商店</router-link>
+    <span>/</span>
+    <router-link to="/cart">購物車</router-link>
+    <span>/</span>
+    <router-link to="/form">填寫購買資料</router-link>
+    <span>/</span>
+    <router-link to="/pay">付款</router-link>
+  </nav>
   <div class="payPageLayout">
     <section class="sectionBuyProcess">
       <div class="buyProcessLayout">
@@ -136,11 +148,13 @@ function pushAdminCart() {
             </div>
           </div>
           <div v-if="payCheckRef">
-            <router-link to="/shop">回到商城繼續逛逛</router-link>
+            <router-link to="/shop" class="goNext"
+              >回到商城繼續逛逛</router-link
+            >
           </div>
           <div v-else class="goShop">
-            <router-link to="/form">上一步</router-link>
-            <button @click="sendOrderFunction" class="a">送出訂單</button>
+            <router-link to="/form" class="goNext">上一步</router-link>
+            <button @click="sendOrderFunction" class="goNext">送出訂單</button>
           </div>
         </div>
       </div>
@@ -150,6 +164,43 @@ function pushAdminCart() {
 </template>
 
 <style scoped>
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #666;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.breadcrumb-nav a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.breadcrumb-nav a:hover {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.breadcrumb-nav span {
+  margin: 0 5px;
+  color: #999;
+}
+
+.breadcrumb-nav a:last-of-type {
+  background-color: transparent;
+  font-weight: bold;
+  background-color: #eaeaea;
+  color: #ff6f61;
+}
+
 .payPageLayout {
   background-image: url('@/assets/pictures/shop03.webp');
   background-size: cover;
@@ -274,8 +325,7 @@ td {
   border-radius: 5px;
 }
 
-a,
-button {
+.goNext {
   background-color: #f5a623;
   color: white;
   padding: 10px 20px;
@@ -285,7 +335,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-a:hover,
+.goNext:hover,
 button:hover {
   background-color: #e68a00;
 }

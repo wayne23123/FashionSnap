@@ -64,6 +64,14 @@ function useKupengFunction() {
 <template>
   <Marquee />
 
+  <!-- 麵包屑導航 -->
+  <nav class="breadcrumb-nav">
+    <router-link to="/">首頁</router-link>
+    <span>/</span>
+    <router-link to="/shop">商店</router-link>
+    <span>/</span>
+    <router-link to="/cart">購物車</router-link>
+  </nav>
   <div class="cartPageLayout">
     <section class="sectionBuyProcess">
       <div class="buyProcessLayout">
@@ -189,6 +197,43 @@ function useKupengFunction() {
 </template>
 
 <style scoped>
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #666;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.breadcrumb-nav a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.breadcrumb-nav a:hover {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.breadcrumb-nav span {
+  margin: 0 5px;
+  color: #999;
+}
+
+.breadcrumb-nav a:last-of-type {
+  background-color: transparent;
+  font-weight: bold;
+  background-color: #eaeaea;
+  color: #ff6f61;
+}
+
 .cartPageLayout {
   background-image: url('@/assets/pictures/shop03.webp');
   background-size: cover;
@@ -320,16 +365,6 @@ td {
   width: 196px;
   position: absolute;
   transform: translate(-50%, -50%);
-}
-
-a {
-  background-color: #daa520;
-  padding: 20px;
-}
-
-a:hover {
-  color: rgb(0, 144, 0);
-  transition: all 0.4s ease;
 }
 
 .totalUse {

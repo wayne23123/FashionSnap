@@ -51,6 +51,14 @@ function toggleFilter() {
 </script>
 
 <template>
+  <!-- 麵包屑導航 -->
+  <nav class="breadcrumb-nav">
+    <router-link to="/">首頁</router-link>
+    <span>/</span>
+    <router-link to="/shop">商店</router-link>
+    <span v-if="currentCategory">/</span>
+    <span v-if="currentCategory">{{ currentCategory }}</span>
+  </nav>
   <section class="shop-page">
     <!-- 篩選切換按鈕 (小螢幕顯示) -->
     <button @click="toggleFilter" class="filter-toggle-btn">篩選</button>
@@ -176,6 +184,43 @@ function toggleFilter() {
 </template>
 
 <style scoped>
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  font-size: 16px; /* 提升字体大小 */
+  color: #666;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.breadcrumb-nav a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  /* background-color: #eaeaea; */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.breadcrumb-nav a:hover {
+  background-color: #ff6f61;
+  color: white;
+}
+
+.breadcrumb-nav span {
+  margin: 0 5px;
+  color: #999;
+}
+
+.breadcrumb-nav a:last-of-type {
+  background-color: transparent;
+  font-weight: bold;
+  color: #ff6f61; /* 最后一个链接字体颜色 */
+  background-color: #eaeaea;
+}
+
 .shop-page {
   display: flex;
   width: 100vw;
