@@ -78,4 +78,42 @@ p {
 .shop-button:focus {
   outline: none; /* 移除焦點樣式 */
 }
+
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 300px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .shop-button {
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .hero-banner {
+    height: 300px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  .shop-button {
+    padding: 8px 16px;
+  }
+}
 </style>
