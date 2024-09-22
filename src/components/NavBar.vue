@@ -74,7 +74,7 @@ onMounted(() => {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.5); /* 透明度50%的白色 */
   backdrop-filter: blur(10px); /* 背景模糊效果 */
-  padding: 10px 20px;
+  padding: 0px 20px;
   position: fixed;
   top: 0;
   width: 100vw;
@@ -86,7 +86,7 @@ onMounted(() => {
 /* 寬螢幕優化 */
 @media (min-width: 1200px) {
   .navbar {
-    padding: 10px 50px;
+    padding: 0 20px;
     max-width: 1440px;
     margin: 0 auto;
   }
@@ -106,19 +106,19 @@ onMounted(() => {
 /* 大螢幕的導航連結樣式 */
 .nav-links {
   display: flex;
-  gap: 20px;
 }
 
 .nav-item {
   color: black;
   text-decoration: none;
   font-size: 18px;
-  padding: 5px 10px;
+  padding: 25px 20px;
   transition: color 0.3s ease;
 }
 
 .nav-item:hover {
-  color: green;
+  background-color: #f0f0f0;
+  color: #007bff; /* 提升互動感 */
 }
 
 /* 小螢幕的漢堡菜單按鈕樣式 */
@@ -128,8 +128,12 @@ onMounted(() => {
   background: none;
   border: none;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
+.menu-button:hover {
+  color: #007bff;
+}
 /* 小螢幕的導航菜單樣式 */
 .mobile-nav-links {
   display: none;

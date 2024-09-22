@@ -27,41 +27,43 @@ function toTopFunction() {
 </script>
 
 <template>
-  <div class="wrap">
-    <!-- item 1  -->
-    <div class="item">
-      <div class="pic">
-        <img src="../assets/pictures/carl-r.jpg" alt="" />
+  <div class="container">
+    <div class="wrap">
+      <!-- item 1  -->
+      <div class="item">
+        <div class="pic">
+          <img src="../assets/pictures/carl-r.jpg" alt="" />
+        </div>
+        <div class="txt">
+          <h2>關於我們</h2>
+          <p>
+            我們是一家充滿活力和創意的網路商城，我們提供時尚的服飾、舒適的鞋子、時尚的帽子等多種產品。我們的目標是為客戶提供最好的購物體驗，讓他們感到舒適和自信。
+          </p>
+        </div>
       </div>
-      <div class="txt">
-        <h2>關於我們</h2>
-        <p>
-          我們是一家充滿活力和創意的網路商城，我們提供時尚的服飾、舒適的鞋子、時尚的帽子等多種產品。我們的目標是為客戶提供最好的購物體驗，讓他們感到舒適和自信。
-        </p>
+      <!-- item 2  -->
+      <div class="item">
+        <div class="txt">
+          <h2>Fasion Snap</h2>
+          <p>
+            我們相信每個人都有自己的風格和品味，我們的產品提供多種不同風格和款式，讓每個客戶都能找到最適合自己的產品。我們堅信，時尚應該是讓人們感到自在和自信的，這也是我們產品的核心價值。
+          </p>
+        </div>
+        <div class="pic">
+          <img src="../assets/pictures/openAlert.jpg" alt="" />
+        </div>
       </div>
-    </div>
-    <!-- item 2  -->
-    <div class="item">
-      <div class="txt">
-        <h2>Fasion Snap</h2>
-        <p>
-          我們相信每個人都有自己的風格和品味，我們的產品提供多種不同風格和款式，讓每個客戶都能找到最適合自己的產品。我們堅信，時尚應該是讓人們感到自在和自信的，這也是我們產品的核心價值。
-        </p>
-      </div>
-      <div class="pic">
-        <img src="../assets/pictures/openAlert.jpg" alt="" />
-      </div>
-    </div>
-    <!-- item 3  -->
-    <div class="item">
-      <div class="pic">
-        <img src="../assets/pictures/clark-street-q.jpg" />
-      </div>
-      <div class="txt">
-        <h2>產品設計</h2>
-        <p>
-          我們的產品設計風格多樣化，從經典風格到潮流時尚，滿足客戶不同的需求。我們的產品質量優良，我們也提供快速而可靠的配送服務，讓您購物更加方便、快捷。
-        </p>
+      <!-- item 3  -->
+      <div class="item">
+        <div class="pic">
+          <img src="../assets/pictures/clark-street-q.jpg" />
+        </div>
+        <div class="txt">
+          <h2>產品設計</h2>
+          <p>
+            我們的產品設計風格多樣化，從經典風格到潮流時尚，滿足客戶不同的需求。我們的產品質量優良，我們也提供快速而可靠的配送服務，讓您購物更加方便、快捷。
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +71,10 @@ function toTopFunction() {
 </template>
 
 <style scoped>
+.container {
+  background: linear-gradient(110deg, #ffffff, #999999); /* 漸變背景 */
+}
+
 .wrap {
   width: 1200px;
   margin: auto;
@@ -76,7 +82,7 @@ function toTopFunction() {
 .item {
   display: flex;
   align-items: center;
-  margin-bottom: 70px;
+  padding-top: 70px;
   font-family: 'Noto Sans TC', sans-serif;
 }
 .item h2 {
