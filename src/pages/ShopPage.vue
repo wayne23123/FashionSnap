@@ -270,6 +270,7 @@ onMounted(() => {
 }
 
 .filter-section {
+  min-width: 200px;
   padding: 15px;
   background-color: #f5f5f5;
   border-radius: 10px;
