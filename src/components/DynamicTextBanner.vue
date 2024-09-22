@@ -83,4 +83,10 @@ export default {
   font-size: 1.2rem;
   margin-top: 20px;
 }
+
+@media (max-width: 870px) {
+  .banner {
+    min-height: 300px;
+  }
+}
 </style>
