@@ -369,7 +369,7 @@ label:hover {
   .filter-section {
     position: fixed;
     left: 0;
-    top: 160px; /* 避免與其他 header 重疊 */
+    top: 50px; /* 避免與其他 header 重疊 */
     height: calc(100% - 60px);
     width: 100%; /* 固定為螢幕寬度的 80% */
     background-color: #f5f5f5;
@@ -395,7 +395,7 @@ label:hover {
     display: block;
     position: fixed;
     left: 10px;
-    top: 140px;
+    bottom: 30px;
     background-color: #ff6f61;
     color: white;
     border: none;
