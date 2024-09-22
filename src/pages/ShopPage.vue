@@ -21,16 +21,10 @@ function copyCard(event, product) {
   demoStore.demos.push(copyRef.value);
 }
 
-// 控制數量和尺寸
-const amountRef = ref(1);
-const sizeRef = ref('M');
-
 // 將商品加入購物車
 function addCartsFunction() {
   cartStore.emptyRefs.push({
     ...copyRef.value,
-    size: sizeRef.value,
-    counter: amountRef.value,
   });
   cartStore.comparisonByIdFunction();
 
@@ -160,13 +154,13 @@ function toggleFilter() {
             <p>NT {{ product.price }}</p>
           </div>
           <div class="product-actions">
-            <select v-model="sizeRef" class="size-select">
+            <select v-model="product.size" class="size-select">
               <option value="M">M</option>
               <option value="L">L</option>
               <option value="XL">XL</option>
               <option value="S">S</option>
             </select>
-            <select v-model="amountRef" class="quantity-select">
+            <select v-model="product.counter" class="quantity-select">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
