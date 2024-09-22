@@ -53,7 +53,7 @@ function stopAutoPlay() {
 }
 
 const leaveHandler = () => {
-  stopAutoPlay();
+  startAutoPlay();
   handleEnd();
 };
 

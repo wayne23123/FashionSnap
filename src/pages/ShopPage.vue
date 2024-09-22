@@ -23,9 +23,9 @@ function copyCard(event, product) {
 }
 
 // 將商品加入購物車
-function addCartsFunction() {
+function addCartsFunction(product) {
   cartStore.emptyRefs.push({
-    ...copyRef.value,
+    ...product,
   });
   cartStore.comparisonByIdFunction();
 
@@ -202,7 +202,7 @@ onMounted(() => {
               <option value="2">2</option>
               <option value="3">3</option>
             </select>
-            <button @click="addCartsFunction" class="add-to-cart-btn">
+            <button @click="addCartsFunction(product)" class="add-to-cart-btn">
               加入購物車
             </button>
           </div>

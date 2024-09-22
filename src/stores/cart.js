@@ -21,10 +21,9 @@ export const useCartStore = defineStore(
           // 判斷只有當 product.id 和 product.size 都相等 emptyRef 時才返回 true
         );
         if (existingProduct) {
-          console.log(1);
-          console.log(emptyRef);
           // 使用 Number() 確保 counter 是數字，避免字串拼接
-          existingProduct.counter += Number(emptyRef.counter);
+          existingProduct.counter =
+            Number(existingProduct.counter) + Number(emptyRef.counter);
         } else {
           // 如果不存在，則將這筆資料加入到 carts 陣列中
           this.carts.push({
