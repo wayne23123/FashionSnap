@@ -5,7 +5,7 @@ import { useCartStore } from '../stores/cart';
 import { useProductionStore } from '../stores/production';
 
 // 使用 import 導入圖片
-import w001 from '../assets/imgs/w001.jpg';
+import w004 from '../assets/imgs/w004.jpg';
 import w002 from '../assets/imgs/w002.jpg';
 import w003 from '../assets/imgs/w003.jpg';
 import { id } from 'element-plus/es/locales.mjs';
@@ -14,22 +14,94 @@ import { ref } from 'vue';
 // 定義產品數據
 const products = [
   {
-    id: 1,
-    name: '燈芯絨水手帽',
-    price: 1200,
-    image: w001,
-  },
-  {
     id: 2,
-    name: 'Puma Suede',
+    order: '',
+    img: w002,
+    title: 'Puma Suede',
+    category: 'shoes',
+    star: '★★★★★',
+    stars: 5,
     price: 3000,
-    image: w002,
+    description: 'Puma經典款；低筒；麂皮材質復古',
+    color: 'black',
+    label: 'Puma',
+    counter: 1,
+    size: 'M',
+    kupeng: false,
+    email: '',
+    name: '',
+    telphone: '',
+    adress: '',
+    message: '',
+    d: '',
+    year: '',
+    month: '',
+    date: '',
+    hours: '',
+    minutes: '',
+    seconds: '',
+    pay: false,
+    complete: false,
   },
   {
     id: 3,
-    name: 'Champion運動外套',
+    order: '',
+    img: w003,
+    title: 'Champion綠色運動外套',
+    category: 'clothes',
+    star: '★★★',
+    stars: 3,
     price: 2100,
-    image: w003,
+    description: 'Puma經典款；低筒；麂皮材質復古',
+    color: 'green',
+    label: 'Champion',
+    counter: 1,
+    size: 'M',
+    kupeng: false,
+    email: '',
+    name: '',
+    telphone: '',
+    adress: '',
+    message: '',
+    d: '',
+    year: '',
+    month: '',
+    date: '',
+    hours: '',
+    minutes: '',
+    seconds: '',
+    pay: false,
+    complete: false,
+  },
+  {
+    id: 4,
+    order: '',
+    img: w004,
+    title: 'Vans old skool',
+    category: 'shoes',
+    star: '★★★★★',
+    stars: 5,
+    price: 3200,
+    description: 'Vans經典不敗款',
+    color: 'black',
+    label: 'vans',
+    counter: 1,
+    size: 'M',
+    kupeng: false,
+    email: '',
+    name: '',
+    telphone: '',
+    adress: '',
+    message: '',
+    d: '',
+    year: '',
+    month: '',
+    date: '',
+    hours: '',
+    minutes: '',
+    seconds: '',
+    pay: false,
+    complete: false,
   },
 ];
 
@@ -81,10 +153,15 @@ function addToCart(product) {
         v-for="(product, index) in products"
         :key="index"
       >
-        <img :src="product.image" alt="product image" />
-        <h3>{{ product.name }}</h3>
-        <p>{{ product.price }}</p>
-        <button @click="addToCart(product)">Add to Cart</button>
+        <img :src="product.img" alt="product image" />
+        <h3>{{ product.title }}</h3>
+        <p>價格: {{ product.price }}</p>
+        <div>
+          社群評價:
+          <span class="demoYellowStar">{{ product.star }}</span>
+        </div>
+        <br />
+        <button @click="addToCart(product)">新增至購物車</button>
       </div>
     </div>
   </section>
@@ -105,7 +182,7 @@ function addToCart(product) {
 }
 
 .product-card {
-  width: 200px;
+  width: 300px;
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
@@ -125,6 +202,11 @@ function addToCart(product) {
   height: auto;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+
+.demoYellowStar {
+  color: #ffc107;
+  margin-left: 5px;
 }
 
 button {

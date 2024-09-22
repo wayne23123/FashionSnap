@@ -8,6 +8,7 @@ import Marquee from '../components/Marquee.vue';
 import FeaturedProducts from '../components/FeaturedProducts.vue';
 import CarouselShop from '../components/CarouselShop.vue';
 import Footer from '../components/Footer.vue';
+import FeaturedInfo from '../components/FeaturedInfo.vue';
 
 // 定義 mouseX 和 mouseY 用於儲存滑鼠位置
 const mouseX = ref(0);
@@ -32,13 +33,15 @@ const handleMouseMove = (event) => {
     <!-- 廣告橫幅 Marquee -->
     <Marquee />
 
-    <!-- Hero Banner -->
-    <HeroBanner />
+    <!-- 推薦商品區 Featured Products -->
+    <FeaturedProducts />
 
     <CarouselShop />
 
-    <!-- 推薦商品區 Featured Products -->
-    <FeaturedProducts />
+    <!-- Hero Banner -->
+    <HeroBanner />
+
+    <FeaturedInfo />
 
     <!-- 頁腳 Footer -->
     <Footer />
