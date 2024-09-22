@@ -158,6 +158,15 @@ onMounted(() => {
   background-color: #f0f0f0;
 }
 
+.nav-item.router-link-exact-active {
+  color: #ff0000; /* 例如紅色高亮 */
+  background-color: #e4e3e3;
+}
+
+.mobile-nav-item.router-link-exact-active {
+  color: #ff0000;
+}
+
 /* 小螢幕漢堡菜單啟用 */
 @media (max-width: 768px) {
   .nav-links {

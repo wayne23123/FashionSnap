@@ -239,7 +239,6 @@ function useKupengFunction() {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  min-height: 80vh;
 }
 
 .sectionBuyProcess {
@@ -283,6 +282,7 @@ function useKupengFunction() {
   width: 100vw;
   max-width: 100%;
   background-color: #c4c4c4;
+  min-height: 30vh;
 }
 
 .footerHolder {

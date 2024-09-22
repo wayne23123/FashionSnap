@@ -55,7 +55,7 @@ function toggleFilter() {
   <nav class="breadcrumb-nav">
     <router-link to="/">首頁</router-link>
     <span>/</span>
-    <router-link to="/shop">商店</router-link>
+    <router-link to="/shop">商品</router-link>
     <span v-if="currentCategory">/</span>
     <span v-if="currentCategory">{{ currentCategory }}</span>
   </nav>

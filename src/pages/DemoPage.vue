@@ -59,7 +59,7 @@ function addcopyDemoFunction() {
   <nav class="breadcrumb-nav">
     <router-link to="/">首頁</router-link>
     <span>/</span>
-    <router-link to="/shop">商店</router-link>
+    <router-link to="/shop">商品</router-link>
     <span>/</span>
     <router-link :to="`/demo/${product.id}`">{{ product.title }}</router-link>
   </nav>
