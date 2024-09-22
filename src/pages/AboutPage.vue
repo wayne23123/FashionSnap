@@ -115,7 +115,7 @@ function toTopFunction() {
 }
 
 .container {
-  background: linear-gradient(110deg, #ffffff, #999999); /* 漸變背景 */
+  background: linear-gradient(110deg, #ffffff, #999999);
 }
 
 .wrap {
@@ -125,7 +125,6 @@ function toTopFunction() {
 .item {
   display: flex;
   align-items: center;
-  padding-top: 70px;
   font-family: 'Noto Sans TC', sans-serif;
 }
 .item h2 {
@@ -169,17 +168,23 @@ function toTopFunction() {
 }
 
 /* 媒體查詢：針對手機或小於 768px 的螢幕 */
-@media (max-width: 1250px) {
+@media (max-width: 1220px) {
+  .container {
+  }
   .wrap {
     width: 100%;
-    margin: auto;
   }
   .item {
     flex-direction: column;
     text-align: center;
+    padding: 30px 0;
   }
 
+  .item .pic {
+    width: 80%;
+  }
   .item .txt {
+    width: 80%;
     padding: 30px 20px;
   }
 

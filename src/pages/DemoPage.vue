@@ -172,7 +172,7 @@ function addcopyDemoFunction() {
 .leftImg {
   width: 400px;
   height: 400px;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   border-radius: 10px;
   overflow: hidden; /* 確保圖片超出部分隱藏 */
   margin-right: 20px;
