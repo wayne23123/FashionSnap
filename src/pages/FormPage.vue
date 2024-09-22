@@ -202,7 +202,7 @@ function pushPayFunction() {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 20px;
+  padding: 20px 0;
 }
 
 .processDivOne,
@@ -210,6 +210,7 @@ function pushPayFunction() {
 .processDivThree {
   width: 200px;
   height: 100px;
+  margin: 20px;
   background-color: #ffffff;
   color: #333;
   border-radius: 10px;

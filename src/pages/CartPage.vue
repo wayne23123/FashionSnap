@@ -145,18 +145,22 @@ function useKupengFunction() {
     </section>
     <section class="sectionTotal">
       <div class="sectionTotalLayout">
+        <!-- 左側區塊: 清除購物車按鈕 -->
         <button @click="cartStore.clearCartFunction()" class="totalLeftButton">
           清除購物車
         </button>
 
-        <div>
-          <transition name="fade" tag="div" class="POA">
+        <!-- 中間區塊: 顯示購物總價 -->
+        <div class="totalPriceContainer">
+          <transition name="fade">
             <div v-if="useKupengRef">
               <div class="totalUse">使用了優惠碼</div>
-              <div class="totalPrice">目前購物車總共 {{ total }} 件商品，</div>
-              <div class="totalPriceTop">原本 NT {{ totalPrice }} 元</div>
-              <div class="totalPriceBottom">
-                特價 NT {{ Math.floor(totalPrice * 0.7) }} 元
+              <div class="totalPriceInfo">
+                <div>目前購物車總共 {{ total }} 件商品，</div>
+                <div class="totalPriceTop">原本 NT {{ totalPrice }} 元</div>
+                <div class="totalPriceBottom">
+                  特價 NT {{ Math.floor(totalPrice * 0.7) }} 元
+                </div>
               </div>
             </div>
             <div v-else>
@@ -165,24 +169,18 @@ function useKupengFunction() {
           </transition>
         </div>
 
-        <div>
-          <transition name="fade" tag="div" class="totalRightButton">
-            <router-link
-              v-if="cartStore.cartsHasProductionFunction()"
-              @mouseenter="copyStepOne"
-              to="/form"
-              class="router"
-              >前去結帳</router-link
-            >
-            <router-link
-              v-else
-              @mouseenter="copyStepOne"
-              to="/shop"
-              class="router"
-            >
-              <div>到商城看新商品</div>
-            </router-link>
-          </transition>
+        <!-- 右側區塊: 結帳或去商城按鈕 -->
+        <div class="checkoutButtonContainer">
+          <router-link
+            v-if="cartStore.cartsHasProductionFunction()"
+            to="/form"
+            class="checkoutButton"
+          >
+            前去結帳
+          </router-link>
+          <router-link v-else to="/shop" class="checkoutButton">
+            到商城看新商品
+          </router-link>
         </div>
       </div>
     </section>
@@ -219,6 +217,7 @@ function useKupengFunction() {
 .processDivThree {
   width: 200px;
   height: 100px;
+  margin: 20px;
   background-color: #ffffff;
   color: #333;
   border-radius: 10px;
@@ -285,7 +284,6 @@ td {
 }
 
 .sectionInputKupengLayout {
-  width: 50vw;
   /* background-color: #fff; */
   display: flex;
   justify-content: center;
@@ -318,46 +316,8 @@ td {
   color: rgb(255, 255, 255);
 }
 
-.sectionTotal {
-  width: 100vw;
-  max-width: 100%;
-  height: 190px;
-  color: black;
-  display: flex;
-  justify-content: center;
-  background-color: #939393;
-}
-
-.sectionTotalLayout {
-  width: 60vw;
-  height: 190px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.totalLeftButton {
-  background-color: black;
-  color: white;
-  padding: 20px;
-}
-
-.totalLeftButton:hover {
-  background-color: #aa0000;
-  color: rgb(255, 255, 255);
-  transition: all 0.6s ease;
-}
-
 .POA {
   width: 196px;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-.totalRightButton {
-  display: flex;
-  justify-content: center;
-  width: 150px;
   position: absolute;
   transform: translate(-50%, -50%);
 }
@@ -429,5 +389,93 @@ a:hover {
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;
+}
+
+.sectionTotal {
+  width: 100%;
+  background-color: #939393;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.sectionTotalLayout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80vw;
+  max-width: 1200px;
+  flex-wrap: wrap; /* 小螢幕時內容可換行 */
+}
+
+.totalLeftButton,
+.checkoutButton {
+  background-color: black;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.totalLeftButton:hover,
+.checkoutButton:hover {
+  background-color: #aa0000;
+}
+
+.totalPriceContainer {
+  text-align: center;
+  flex: 1; /* 總價區塊在中間並自適應寬度 */
+  margin: 10px 0;
+}
+
+.totalPriceInfo {
+  display: inline-block;
+  text-align: left;
+}
+
+.totalPriceTop {
+  text-decoration: line-through;
+}
+
+.totalPriceBottom {
+  background-color: #daa520;
+  padding: 5px;
+}
+
+.checkoutButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.checkoutButton {
+  background-color: #daa520;
+  padding: 15px;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.checkoutButton:hover {
+  background-color: #aa0000;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .sectionTotalLayout {
+    flex-direction: column; /* 小螢幕上改為垂直排列 */
+    align-items: center;
+  }
+
+  .totalLeftButton,
+  .checkoutButton {
+    margin-bottom: 10px; /* 增加按鈕之間的距離 */
+  }
+
+  .totalPriceContainer {
+    margin-bottom: 20px;
+  }
 }
 </style>

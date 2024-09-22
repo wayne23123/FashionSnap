@@ -170,8 +170,8 @@ function pushAdminCart() {
   width: 60%;
   display: flex;
   justify-content: space-around;
-  gap: 20px;
   flex-wrap: wrap;
+  padding: 20px 0;
 }
 
 .processDivOne,
@@ -179,6 +179,7 @@ function pushAdminCart() {
 .processDivThree {
   width: 200px;
   height: 100px;
+  margin: 20px;
   background-color: #ffffff;
   color: #333;
   border-radius: 10px;
