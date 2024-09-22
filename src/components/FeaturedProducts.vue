@@ -153,14 +153,16 @@ function addToCart(product) {
         v-for="(product, index) in products"
         :key="index"
       >
-        <img :src="product.img" alt="product image" />
-        <h3>{{ product.title }}</h3>
-        <p>價格: {{ product.price }}</p>
-        <div>
-          社群評價:
-          <span class="demoYellowStar">{{ product.star }}</span>
-        </div>
-        <br />
+        <router-link :to="'/demo/' + product.id">
+          <img :src="product.img" alt="product image" />
+          <h3>{{ product.title }}</h3>
+          <p>價格: {{ product.price }}</p>
+          <div>
+            社群評價:
+            <span class="demoYellowStar">{{ product.star }}</span>
+          </div>
+          <br />
+        </router-link>
         <button @click="addToCart(product)">新增至購物車</button>
       </div>
     </div>
