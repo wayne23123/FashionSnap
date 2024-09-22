@@ -74,21 +74,23 @@ onMounted(() => {
     <aside :class="['filter-section', { open: isFilterOpen }]">
       <form @submit.prevent="searchAndClose">
         <div class="input-wrapper">
-          <input
-            id="search-field"
-            v-model="productionStore.searchTerm"
-            placeholder="搜尋商品..."
-            class="search-bar"
-          />
-          <!-- 顯示 X 按鈕，當 searchTerm 有內容時顯示 -->
-          <span
-            v-if="productionStore.searchTerm"
-            class="clear-btn"
-            @click="clearSearch"
-            >×</span
-          >
+          <div class="input-container">
+            <input
+              id="search-field"
+              v-model="productionStore.searchTerm"
+              placeholder="搜尋商品..."
+              class="search-bar"
+            />
+            <!-- 顯示 X 按鈕，當 searchTerm 有內容時顯示 -->
+            <span
+              v-if="productionStore.searchTerm"
+              class="clear-btn"
+              @click="clearSearch"
+              >✖</span
+            >
+          </div>
+          <button type="submit" class="search-button">搜尋</button>
         </div>
-        <button type="submit" class="search-button">搜尋</button>
 
         <div class="category-filter">
           <label
@@ -100,6 +102,7 @@ onMounted(() => {
             id="all"
             type="radio"
             value=""
+            @change="searchAndClose"
             v-model="productionStore.searchTerm"
             class="hidden-input"
           />
@@ -113,6 +116,7 @@ onMounted(() => {
             id="hat"
             type="radio"
             value="hat"
+            @change="searchAndClose"
             v-model="productionStore.searchTerm"
             class="hidden-input"
           />
@@ -126,6 +130,7 @@ onMounted(() => {
             id="shoes"
             type="radio"
             value="shoes"
+            @change="searchAndClose"
             v-model="productionStore.searchTerm"
             class="hidden-input"
           />
@@ -139,6 +144,7 @@ onMounted(() => {
             id="clothes"
             type="radio"
             value="clothes"
+            @change="searchAndClose"
             v-model="productionStore.searchTerm"
             class="hidden-input"
           />
@@ -152,6 +158,7 @@ onMounted(() => {
             id="pants"
             type="radio"
             value="pants"
+            @change="searchAndClose"
             v-model="productionStore.searchTerm"
             class="hidden-input"
           />
@@ -273,27 +280,45 @@ onMounted(() => {
   top: 20px; /* 設定到頁面頂部的距離 */
 }
 
-.search-bar {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  margin-bottom: 15px;
-}
-
 .input-wrapper {
+  display: flex;
   position: relative;
   flex-grow: 1;
 }
 
+.input-container {
+  flex-grow: 1;
+  position: relative;
+}
+
+.search-bar {
+  width: 100%;
+
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+
+  margin-bottom: 15px;
+  margin-right: 5px;
+}
+
 .clear-btn {
   position: absolute;
-  right: 12px;
-  top: 36%;
+  right: 10px;
+  top: 30%;
   transform: translateY(-50%);
+}
+
+.search-button {
+  padding: 10px;
+  margin-bottom: 15px;
+  min-width: 70px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  color: #aaa;
-  transition: color 0.3s ease;
 }
 
 .category-filter {

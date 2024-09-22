@@ -103,7 +103,7 @@ function toTopFunction() {
 
 @media (max-width: 768px) {
   .navTop {
-    padding-top: 50px;
+    padding-top: 40px;
   }
 }
 </style>

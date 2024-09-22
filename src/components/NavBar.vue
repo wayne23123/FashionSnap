@@ -169,7 +169,7 @@ onMounted(() => {
 /* 小螢幕漢堡菜單啟用 */
 @media (max-width: 768px) {
   .logo img {
-    height: 48px;
+    height: 30px;
   }
 
   .nav-links {
