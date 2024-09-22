@@ -155,14 +155,14 @@ section {
   display: flex;
   justify-content: center;
   color: #f3f6e0;
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  padding: 10px 0;
 }
 
 .right-text {
-  padding: 0 20px;
-  font-size: 24px;
+  padding: 0 20px 20px 20px;
+  font-size: 1.6rem;
   color: #f3f6e0;
 }
 
@@ -182,6 +182,39 @@ section {
 @media only screen and (max-width: 700px) {
   section .div-container .div-layout .div-card:hover {
     transform: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .right-title {
+    font-size: 1.6rem;
+  }
+  .right-text {
+    font-size: 1.4rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .right-title {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+  }
+  .right-text {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .div-card-left,
+  .div-card-right {
+    width: 300px;
+  }
+  .right-title {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
+  .right-text {
+    font-size: 1rem;
   }
 }
 </style>
