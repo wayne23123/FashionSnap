@@ -173,18 +173,12 @@ function useKupengFunction() {
         </div>
       </div>
     </section>
-    <section class="sectionTotal">
+    <section v-if="cartStore.carts.length > 0" class="sectionTotal">
       <div class="sectionTotalLayout">
         <!-- 左側區塊: 清除購物車按鈕 -->
-        <button
-          v-if="cartStore.carts.length > 0"
-          @click="cartStore.clearCartFunction()"
-          class="totalLeftButton"
-        >
+        <button @click="cartStore.clearCartFunction()" class="totalLeftButton">
           清除購物車
         </button>
-
-        <div v-else></div>
 
         <!-- 中間區塊: 顯示購物總價 -->
         <div class="totalPriceContainer">
@@ -351,12 +345,12 @@ td {
   align-items: center;
   text-align: center;
   flex-direction: column;
-  height: 200px; /* 調整高度，讓其看起來更居中 */
+  height: 400px; /* 調整高度，讓其看起來更居中 */
   background: rgba(0, 0, 0, 0.6);
 
   font-size: 1.6rem;
   color: #333; /* 柔和的文字顏色 */
-  padding: 20px;
+  padding: 40px;
   margin: 50px 0;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
