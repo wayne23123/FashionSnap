@@ -1,11 +1,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import shop02 from '../assets/pictures/shop02.webp';
+import carlR from '../assets/pictures/carl-r.jpg';
+import hannahM from '../assets/pictures/hannah-m.jpg';
 
-const items = ref([
-  { image: './src/assets/pictures/shop02.webp' },
-  { image: './src/assets/pictures/carl-r.jpg' },
-  { image: './src/assets/pictures/hannah-m.jpg' },
-]);
+const items = ref([{ image: shop02 }, { image: carlR }, { image: hannahM }]);
 
 const currentIndex = ref(0);
 const autoPlayInterval = ref(null);
