@@ -50,8 +50,6 @@ function toggleFilter() {
     <router-link to="/">首頁</router-link>
     <span>/</span>
     <router-link to="/shop">商品</router-link>
-    <span v-if="currentCategory">/</span>
-    <span v-if="currentCategory">{{ currentCategory }}</span>
   </nav>
   <section class="shop-page">
     <!-- 篩選切換按鈕 (小螢幕顯示) -->

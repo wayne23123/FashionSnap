@@ -224,4 +224,43 @@ button {
 button:hover {
   background-color: #ff4500;
 }
+
+@media (max-width: 768px) {
+  .products-grid {
+    justify-content: center;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  .product-card img {
+    border-radius: 0;
+  }
+
+  button {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+
+  .demoYellowStar {
+    font-size: 1rem;
+  }
+}
 </style>

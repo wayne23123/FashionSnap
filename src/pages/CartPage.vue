@@ -96,7 +96,7 @@ function useKupengFunction() {
     </section>
     <section class="sectionCart">
       <div class="sectionTable">
-        <table>
+        <table v-if="cartStore.carts.length > 0">
           <thead>
             <tr>
               <th>REMOVE</th>
@@ -149,9 +149,17 @@ function useKupengFunction() {
             </tr>
           </TransitionGroup>
         </table>
+
+        <div v-else class="empty-cart-message">
+          <h1>購物車為空，來去逛逛!</h1>
+          <br />
+          <router-link to="/shop" href="/shop" class="go-to-shop"
+            >前往購物商城</router-link
+          >
+        </div>
       </div>
     </section>
-    <section class="sectionInputKupeng">
+    <section v-if="cartStore.carts.length > 0" class="sectionInputKupeng">
       <div class="sectionInputKupengLayout">
         <div class="inputKupeng">
           <input
@@ -168,9 +176,15 @@ function useKupengFunction() {
     <section class="sectionTotal">
       <div class="sectionTotalLayout">
         <!-- 左側區塊: 清除購物車按鈕 -->
-        <button @click="cartStore.clearCartFunction()" class="totalLeftButton">
+        <button
+          v-if="cartStore.carts.length > 0"
+          @click="cartStore.clearCartFunction()"
+          class="totalLeftButton"
+        >
           清除購物車
         </button>
+
+        <div v-else></div>
 
         <!-- 中間區塊: 顯示購物總價 -->
         <div class="totalPriceContainer">
@@ -197,7 +211,7 @@ function useKupengFunction() {
             {{
               cartStore.cartsHasProductionFunction()
                 ? '前去結帳'
-                : '到商城看新商品'
+                : '前往購物商城'
             }}
           </button>
         </div>
@@ -294,7 +308,6 @@ function useKupengFunction() {
   width: 100vw;
   max-width: 100%;
   background-color: #c4c4c4;
-  min-height: 30vh;
 }
 
 .footerHolder {
@@ -330,6 +343,63 @@ td {
 .addRight {
   margin-left: 10px;
   padding: 10px;
+}
+
+.empty-cart-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  height: 200px; /* 調整高度，讓其看起來更居中 */
+  background: rgba(0, 0, 0, 0.6);
+
+  font-size: 1.6rem;
+  color: #333; /* 柔和的文字顏色 */
+  padding: 20px;
+  margin: 50px 0;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+}
+
+.empty-cart-message h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin: 0;
+  animation: fadeIn 1s ease-in-out; /* 渐显动画 */
+}
+
+/* 前往購物商城按鈕樣式 */
+.go-to-shop {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #ff4757; /* 醒目的紅色按鈕 */
+  color: white;
+  font-size: 1.4rem;
+  text-decoration: none; /* 移除下劃線 */
+  border-radius: 50px; /* 圓形按鈕 */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); /* 陰影讓按鈕有深度 */
+  margin-top: 20px;
+  cursor: pointer;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+    background-color: #e84118; /* 在動畫中途改變顏色 */
+  }
+}
+
+.go-to-shop:hover {
+  background-color: #e84118;
+  transform: scale(1.1); /* 懸停時按鈕放大效果 */
+  box-shadow: 0 6px 20px rgba(232, 65, 24, 0.6); /* 增強懸停時的陰影效果 */
 }
 
 .sectionInputKupeng {
@@ -523,6 +593,38 @@ td {
 
   .totalPriceContainer {
     margin-bottom: 20px;
+  }
+
+  .empty-cart-message {
+    height: 180px;
+    font-size: 1.4rem;
+    margin: 40px 0;
+  }
+
+  .empty-cart-message h1 {
+    font-size: 2rem;
+  }
+
+  .go-to-shop {
+    padding: 10px 25px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .empty-cart-message {
+    height: 160px;
+    font-size: 1.2rem;
+    margin: 30px 0;
+  }
+
+  .empty-cart-message h1 {
+    font-size: 1.6rem;
+  }
+
+  .go-to-shop {
+    padding: 8px 20px;
+    font-size: 1rem;
   }
 }
 </style>

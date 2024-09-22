@@ -74,10 +74,10 @@ onMounted(() => {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.5); /* 透明度50%的白色 */
   backdrop-filter: blur(10px); /* 背景模糊效果 */
-  padding: 0px 20px;
   position: fixed;
   top: 0;
   width: 100vw;
+  padding: 0 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   z-index: 200;
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
@@ -86,7 +86,6 @@ onMounted(() => {
 /* 寬螢幕優化 */
 @media (min-width: 1200px) {
   .navbar {
-    padding: 0 20px;
     max-width: 1440px;
     margin: 0 auto;
   }
@@ -169,6 +168,10 @@ onMounted(() => {
 
 /* 小螢幕漢堡菜單啟用 */
 @media (max-width: 768px) {
+  .logo img {
+    height: 48px;
+  }
+
   .nav-links {
     display: none; /* 隱藏大螢幕的導航連結 */
   }

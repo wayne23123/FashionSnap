@@ -100,4 +100,10 @@ function toTopFunction() {
     /* 計算公式：螢幕的寬度減去 1440px 後除以 2，再加上 20px */
   }
 }
+
+@media (max-width: 768px) {
+  .navTop {
+    padding-top: 50px;
+  }
+}
 </style>
