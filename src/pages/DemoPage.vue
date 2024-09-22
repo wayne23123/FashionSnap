@@ -257,4 +257,54 @@ function addcopyDemoFunction() {
   color: #666;
   line-height: 1.5;
 }
+
+@media only screen and (max-width: 576px) {
+  .sectionDemo {
+    padding: 10px;
+  }
+
+  .demoLayout {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .leftImg {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .rightInfo {
+    width: 100%;
+    text-align: center;
+  }
+
+  .demoTitle {
+    font-size: 20px;
+  }
+
+  .demoPrice {
+    font-size: 16px;
+  }
+
+  .formAddButton {
+    flex-direction: column;
+  }
+
+  .sizeRef,
+  .amountDemo {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .demoButton {
+    width: 100%;
+  }
+
+  .demoDescription {
+    font-size: 14px;
+  }
+}
 </style>
