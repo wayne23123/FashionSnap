@@ -37,6 +37,15 @@ function stopAutoPlay() {
   }
 }
 
+// 開始或停止自動播放
+function toggleCarousel(action) {
+  if (action === 'stop') {
+    stopAutoPlay();
+  } else {
+    startAutoPlay();
+  }
+}
+
 // 在組件掛載時啟動自動播放，組件卸載時停止
 onMounted(() => {
   startAutoPlay();
@@ -53,13 +62,33 @@ onUnmounted(() => {
       class="carousel-track"
       :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
     >
-      <div class="carousel-item" v-for="(item, index) in items" :key="index">
+      <div
+        class="carousel-item"
+        v-for="(item, index) in items"
+        :key="index"
+        @mouseenter="toggleCarousel('stop')"
+        @mouseleave="toggleCarousel('start')"
+      >
         <img :src="item.image" alt="carousel image" />
       </div>
     </div>
 
-    <button class="prev" @click="prevSlide">‹</button>
-    <button class="next" @click="nextSlide">›</button>
+    <button
+      class="prev"
+      @click="prevSlide"
+      @mouseenter="toggleCarousel('stop')"
+      @mouseleave="toggleCarousel('start')"
+    >
+      ‹
+    </button>
+    <button
+      class="next"
+      @click="nextSlide"
+      @mouseenter="toggleCarousel('stop')"
+      @mouseleave="toggleCarousel('start')"
+    >
+      ›
+    </button>
   </div>
 </template>
 
@@ -92,7 +121,7 @@ onUnmounted(() => {
 
 /* 當滑鼠懸停時，圖片縮放效果 */
 .carousel-item:hover img {
-  transform: scale(1.1); /* 放大圖片 */
+  transform: scale(1.05); /* 放大圖片 */
 }
 
 button {
@@ -106,7 +135,6 @@ button {
   cursor: pointer;
   padding: 10px;
   z-index: 1;
-  border-radius: 50%;
 }
 
 .prev {
