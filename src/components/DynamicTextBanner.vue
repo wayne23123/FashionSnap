@@ -84,9 +84,33 @@ export default {
   margin-top: 20px;
 }
 
-@media (max-width: 870px) {
-  .banner {
-    min-height: 300px;
+@media (max-width: 900px) {
+  .txt-main-title {
+    font-size: 1.8rem;
+  }
+
+  .txt-sub-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .txt-main-title {
+    font-size: 1.2rem;
+  }
+
+  .txt-sub-title {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .txt-main-title {
+    font-size: 0.8rem;
+  }
+
+  .txt-sub-title {
+    font-size: 0.8rem;
   }
 }
 </style>
