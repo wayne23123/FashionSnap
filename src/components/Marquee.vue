@@ -92,7 +92,7 @@ onUnmounted(() => {
 }
 
 .marquee-message {
-  margin-right: 50px; /* 每個消息之間的間距 */
+  margin-right: 20px; /* 每個消息之間的間距 */
   font-size: 1.5rem;
   font-weight: bold;
 }
